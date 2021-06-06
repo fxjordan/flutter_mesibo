@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_mesibo/mesibo.dart';
+import 'package:flutter_mesibo/mesibo_binding.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
 
 void main() {
@@ -15,8 +18,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +34,6 @@ class _MyAppState extends State<MyApp> {
 /// We need to wrap the test in a separate widget so the 'prompt' method can access
 /// a BuildContext with a reference to a MaterialApp.
 class MesiboTestContent extends StatefulWidget {
-
   @override
   _MesiboTestContentState createState() => _MesiboTestContentState();
 }
@@ -76,7 +76,25 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
       _logs.add('started Mesibo successfully');
     });
 
-    // TODO Receive or send messages
+    /*
+     * Listen for incoming messages.
+     *
+     * You can send a text message from the Mesibo console to the user
+     * from which you copied the access token.
+     */
+    mesibo.realTimeMessageStream.listen(_handleNewMessage);
+  }
+
+  /*
+   * Adds a received real time message to the output
+   */
+  void _handleNewMessage(MesiboMessage message) {
+    // read message data as string
+    final messageText = utf8.decode(message.data);
+
+    setState(() {
+      _logs.add('new message (peer=${message.params.peer}): $messageText');
+    });
   }
 
   @override
@@ -91,7 +109,7 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
               context,
               title: Text('Access Token'),
               hintText:
-              'Input a Mesibo access token for an existing user (copy from Mesibo console)',
+                  'Input a Mesibo access token for an existing user (copy from Mesibo console)',
               textOK: Text('Start Mesibo'),
             );
             initMesibo(accessToken);
@@ -100,8 +118,14 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
         Expanded(
           child: Center(
               child: Column(
-                children: _logs.map((text) => Text(text)).toList(),
-              )),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _logs
+                .map((text) => Padding(
+                      padding: EdgeInsets.symmetric(vertical: 2),
+                      child: Text(text),
+                    ))
+                .toList(),
+          )),
         ),
       ],
     );
