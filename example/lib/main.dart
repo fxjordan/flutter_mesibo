@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_mesibo/flutter_mesibo.dart';
+import 'package:flutter_mesibo/mesibo.dart';
+import 'package:prompt_dialog/prompt_dialog.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,33 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
 
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await FlutterMesibo.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +24,86 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+        body: MesiboTestContent(),
       ),
+    );
+  }
+}
+
+/// We need to wrap the test in a separate widget so the 'prompt' method can access
+/// a BuildContext with a reference to a MaterialApp.
+class MesiboTestContent extends StatefulWidget {
+
+  @override
+  _MesiboTestContentState createState() => _MesiboTestContentState();
+}
+
+class _MesiboTestContentState extends State<MesiboTestContent> {
+  List<String> _logs = ['- Trying to start Mesibo -'];
+
+  /// Called after user pasted an access token into our prompt and hit 'start' button
+  Future<void> initMesibo(String accessToken) async {
+    // Get Mesibo instance
+    Mesibo mesibo = Mesibo.instance;
+
+    // 1. set a users access token
+
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      // TODO Implement returning of result (may fail without exception)
+      await mesibo.setAccessToken(accessToken);
+    } on PlatformException catch (e) {
+      setState(() {
+        _logs.add('Failed to set access token: ${e.message}');
+      });
+      return;
+    }
+    setState(() {
+      _logs.add('setAccess token successfully');
+    });
+
+    // 2. Start Mesibo
+    try {
+      // TODO Implement returning of result (may fail without exception)
+      await mesibo.start();
+    } on PlatformException catch (e) {
+      setState(() {
+        _logs.add('Failed to start Mesibo!: ${e.message}');
+      });
+      return;
+    }
+    setState(() {
+      _logs.add('started Mesibo successfully');
+    });
+
+    // TODO Receive or send messages
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        MaterialButton(
+          color: Theme.of(context).primaryColor,
+          child: Text('Add token and start Mesibo'),
+          onPressed: () async {
+            String accessToken = await prompt(
+              context,
+              title: Text('Access Token'),
+              hintText:
+              'Input a Mesibo access token for an existing user (copy from Mesibo console)',
+              textOK: Text('Start Mesibo'),
+            );
+            initMesibo(accessToken);
+          },
+        ),
+        Expanded(
+          child: Center(
+              child: Column(
+                children: _logs.map((text) => Text(text)).toList(),
+              )),
+        ),
+      ],
     );
   }
 }

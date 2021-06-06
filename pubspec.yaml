@@ -12,9 +12,15 @@ dependencies:
   flutter:
     sdk: flutter
 
+  observable_ish: ^2.1.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # generate type-safe platform bridges
+  pigeon: ^0.1.23
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

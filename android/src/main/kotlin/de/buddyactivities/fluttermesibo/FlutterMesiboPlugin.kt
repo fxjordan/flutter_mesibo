@@ -1,36 +1,87 @@
+/*
+ * Copyright (c) BUDDY Activities UG (haftungsbeschränkt) - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited.
+ * Proprietary and confidential
+ *
+ * Written by Felix Jordan <felix.jordan@buddy-app.de>, May, 2021
+ */
+
 package de.buddyactivities.fluttermesibo
 
+import android.content.Context
+import android.util.Log
 import androidx.annotation.NonNull
-
+import com.mesibo.api.Mesibo
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
 
 /** FlutterMesiboPlugin */
-class FlutterMesiboPlugin: FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
+class FlutterMesiboPlugin: FlutterPlugin {
 
-  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_mesibo")
-    channel.setMethodCallHandler(this)
+  companion object {
+    private const val TAG = "FlutterMesiboPlugin"
   }
 
-  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
-    }
+  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    initMesibo(flutterPluginBinding.applicationContext)
+    setupMesiboPlatformBinding(flutterPluginBinding)
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
+    /*
+     * TODO Cleanup stop Mesibo and cleanup resources on detach
+     */
+  }
+
+  /**
+   * Initializes the Mesibo platform library and does some initial configuration.
+   *
+   * This initialization does not require an authenticated user and should be done on
+   * application startup.
+   * More setup (access token, actual startup of real time connection) is done from the Flutter
+   * application through the platform binding implementation (see {@link AndroidMesiboRealTimeAPI}.
+   */
+  private fun initMesibo(applicationContext: Context) {
+    Log.d(TAG, "Initializing Mesibo")
+
+    val api: Mesibo = Mesibo.getInstance()
+    val result = api.init(applicationContext)
+
+    Log.d(TAG, "Mesibo initialized: $result")
+    if (!result) {
+      Log.w(TAG, "Mesibo 'init' returned false! Is this a problem?!")
+    }
+
+    // Other default configurations
+    Mesibo.setSecureConnection(true)
+  }
+
+  /**
+   * Creates the platform specific API implementations and registers them with the Flutter.
+   */
+  private fun setupMesiboPlatformBinding(pluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    // 1. Connection listener, delegating to Flutter target listener
+
+    // the listener that calls Flutter methods using platform channels
+    val targetConnectionListener = MesiboBinding.MesiboConnectionListener(pluginBinding.binaryMessenger)
+    // the native Mesibo listener that delegates to the platform channel implementation
+    val delegatingConnectionListener = DelegatingConnectionListener(targetConnectionListener)
+    Mesibo.addListener(delegatingConnectionListener)
+    Log.i(TAG, "DelegatingConnectionListener initialized")
+
+    // 2. Message listener, delegating to Flutter target listener
+    val targetMessageListener = MesiboBinding.MesiboMessageListener(pluginBinding.binaryMessenger)
+    val delegatingMessageListener = DelegatingMessageListener(targetMessageListener)
+    Mesibo.addListener(delegatingMessageListener)
+    Log.i(TAG, "DelegatingMessageListener initialized")
+
+    // 3. Setup real-time API implementation
+    /*
+     * NOTE: It's important that the MesiboRealTimeApi implementation uses the delegating MessageListener
+     * from above so the Flutter side receives the requested messages!
+     */
+    MesiboBinding.MesiboRealTimeApi.setup(
+            pluginBinding.binaryMessenger,
+            AndroidMesiboRealTimeApi(delegatingMessageListener, pluginBinding.applicationContext))
   }
 }
