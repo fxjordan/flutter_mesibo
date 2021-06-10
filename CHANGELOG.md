@@ -1,3 +1,12 @@
+## 0.1.2
+
+- Minimum iOS deployment target version is iOS 10.0
+- upgraded mesibo pod dependency to 1.4.5
+
+## 0.1.1
+
+add `setPushToken(token)` to support push notification use cases
+
 ## 0.1.0
 
 Initial release of basic Mesibo chat functionalities with platform specific implementations for iOS
@@ -36,7 +45,3 @@ Release note: This initial version of the library was extracted from our company
 *The BUDDY App*, which will be moved to production soon. Therefore, we have high interest in maintaining
 this Flutter plugin and are happy to receive feedback from the community.
 In the future, some code needs to be refactored to be more general and usable as a common Mesibo library.
-
-## 0.1.1
-
-add `setPushToken(token)` to support push notification use cases
