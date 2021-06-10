@@ -22,8 +22,32 @@ static NSDictionary<NSString*, id>* wrapResult(NSDictionary *result, FlutterErro
       };
 }
 
+@interface MSBOConnectionStatus ()
++(MSBOConnectionStatus*)fromMap:(NSDictionary*)dict;
+-(NSDictionary*)toMap;
+@end
+@interface MSBOMesiboMessage ()
++(MSBOMesiboMessage*)fromMap:(NSDictionary*)dict;
+-(NSDictionary*)toMap;
+@end
+@interface MSBOMessageParams ()
++(MSBOMessageParams*)fromMap:(NSDictionary*)dict;
+-(NSDictionary*)toMap;
+@end
+@interface MSBOUserProfile ()
++(MSBOUserProfile*)fromMap:(NSDictionary*)dict;
+-(NSDictionary*)toMap;
+@end
 @interface MSBOSetAccessTokenCommand ()
 +(MSBOSetAccessTokenCommand*)fromMap:(NSDictionary*)dict;
+-(NSDictionary*)toMap;
+@end
+@interface MSBOSetPushTokenResult ()
++(MSBOSetPushTokenResult*)fromMap:(NSDictionary*)dict;
+-(NSDictionary*)toMap;
+@end
+@interface MSBOSetPushTokenCommand ()
++(MSBOSetPushTokenCommand*)fromMap:(NSDictionary*)dict;
 -(NSDictionary*)toMap;
 @end
 @interface MSBOChatHistoryResult ()
@@ -50,121 +74,27 @@ static NSDictionary<NSString*, id>* wrapResult(NSDictionary *result, FlutterErro
 +(MSBOSendMessageCommand*)fromMap:(NSDictionary*)dict;
 -(NSDictionary*)toMap;
 @end
-@interface MSBOMessageParams ()
-+(MSBOMessageParams*)fromMap:(NSDictionary*)dict;
--(NSDictionary*)toMap;
-@end
-@interface MSBOUserProfile ()
-+(MSBOUserProfile*)fromMap:(NSDictionary*)dict;
--(NSDictionary*)toMap;
-@end
-@interface MSBOConnectionStatus ()
-+(MSBOConnectionStatus*)fromMap:(NSDictionary*)dict;
--(NSDictionary*)toMap;
-@end
-@interface MSBOMesiboMessage ()
-+(MSBOMesiboMessage*)fromMap:(NSDictionary*)dict;
--(NSDictionary*)toMap;
-@end
 
-@implementation MSBOSetAccessTokenCommand
-+(MSBOSetAccessTokenCommand*)fromMap:(NSDictionary*)dict {
-  MSBOSetAccessTokenCommand* result = [[MSBOSetAccessTokenCommand alloc] init];
-  result.accessToken = dict[@"accessToken"];
-  if ((NSNull *)result.accessToken == [NSNull null]) {
-    result.accessToken = nil;
+@implementation MSBOConnectionStatus
++(MSBOConnectionStatus*)fromMap:(NSDictionary*)dict {
+  MSBOConnectionStatus* result = [[MSBOConnectionStatus alloc] init];
+  result.code = dict[@"code"];
+  if ((NSNull *)result.code == [NSNull null]) {
+    result.code = nil;
   }
   return result;
 }
 -(NSDictionary*)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.accessToken ? self.accessToken : [NSNull null]), @"accessToken", nil];
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.code ? self.code : [NSNull null]), @"code", nil];
 }
 @end
 
-@implementation MSBOChatHistoryResult
-+(MSBOChatHistoryResult*)fromMap:(NSDictionary*)dict {
-  MSBOChatHistoryResult* result = [[MSBOChatHistoryResult alloc] init];
-  result.readCount = dict[@"readCount"];
-  if ((NSNull *)result.readCount == [NSNull null]) {
-    result.readCount = nil;
-  }
-  return result;
-}
--(NSDictionary*)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.readCount ? self.readCount : [NSNull null]), @"readCount", nil];
-}
-@end
-
-@implementation MSBOLoadChatHistoryCommand
-+(MSBOLoadChatHistoryCommand*)fromMap:(NSDictionary*)dict {
-  MSBOLoadChatHistoryCommand* result = [[MSBOLoadChatHistoryCommand alloc] init];
-  result.peerAddress = dict[@"peerAddress"];
-  if ((NSNull *)result.peerAddress == [NSNull null]) {
-    result.peerAddress = nil;
-  }
-  result.count = dict[@"count"];
-  if ((NSNull *)result.count == [NSNull null]) {
-    result.count = nil;
-  }
-  return result;
-}
--(NSDictionary*)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.peerAddress ? self.peerAddress : [NSNull null]), @"peerAddress", (self.count ? self.count : [NSNull null]), @"count", nil];
-}
-@end
-
-@implementation MSBOChatSummaryResult
-+(MSBOChatSummaryResult*)fromMap:(NSDictionary*)dict {
-  MSBOChatSummaryResult* result = [[MSBOChatSummaryResult alloc] init];
-  result.readCount = dict[@"readCount"];
-  if ((NSNull *)result.readCount == [NSNull null]) {
-    result.readCount = nil;
-  }
-  return result;
-}
--(NSDictionary*)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.readCount ? self.readCount : [NSNull null]), @"readCount", nil];
-}
-@end
-
-@implementation MSBOLoadChatSummaryCommand
-+(MSBOLoadChatSummaryCommand*)fromMap:(NSDictionary*)dict {
-  MSBOLoadChatSummaryCommand* result = [[MSBOLoadChatSummaryCommand alloc] init];
-  result.count = dict[@"count"];
-  if ((NSNull *)result.count == [NSNull null]) {
-    result.count = nil;
-  }
-  return result;
-}
--(NSDictionary*)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.count ? self.count : [NSNull null]), @"count", nil];
-}
-@end
-
-@implementation MSBOSendMessageResult
-+(MSBOSendMessageResult*)fromMap:(NSDictionary*)dict {
-  MSBOSendMessageResult* result = [[MSBOSendMessageResult alloc] init];
-  result.result = dict[@"result"];
-  if ((NSNull *)result.result == [NSNull null]) {
-    result.result = nil;
-  }
-  return result;
-}
--(NSDictionary*)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.result ? self.result : [NSNull null]), @"result", nil];
-}
-@end
-
-@implementation MSBOSendMessageCommand
-+(MSBOSendMessageCommand*)fromMap:(NSDictionary*)dict {
-  MSBOSendMessageCommand* result = [[MSBOSendMessageCommand alloc] init];
+@implementation MSBOMesiboMessage
++(MSBOMesiboMessage*)fromMap:(NSDictionary*)dict {
+  MSBOMesiboMessage* result = [[MSBOMesiboMessage alloc] init];
   result.params = [MSBOMessageParams fromMap:dict[@"params"]];
   if ((NSNull *)result.params == [NSNull null]) {
     result.params = nil;
-  }
-  result.mid = dict[@"mid"];
-  if ((NSNull *)result.mid == [NSNull null]) {
-    result.mid = nil;
   }
   result.data = dict[@"data"];
   if ((NSNull *)result.data == [NSNull null]) {
@@ -173,7 +103,7 @@ static NSDictionary<NSString*, id>* wrapResult(NSDictionary *result, FlutterErro
   return result;
 }
 -(NSDictionary*)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.params ? [self.params toMap] : [NSNull null]), @"params", (self.mid ? self.mid : [NSNull null]), @"mid", (self.data ? self.data : [NSNull null]), @"data", nil];
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.params ? [self.params toMap] : [NSNull null]), @"params", (self.data ? self.data : [NSNull null]), @"data", nil];
 }
 @end
 
@@ -301,26 +231,132 @@ static NSDictionary<NSString*, id>* wrapResult(NSDictionary *result, FlutterErro
 }
 @end
 
-@implementation MSBOConnectionStatus
-+(MSBOConnectionStatus*)fromMap:(NSDictionary*)dict {
-  MSBOConnectionStatus* result = [[MSBOConnectionStatus alloc] init];
-  result.code = dict[@"code"];
-  if ((NSNull *)result.code == [NSNull null]) {
-    result.code = nil;
+@implementation MSBOSetAccessTokenCommand
++(MSBOSetAccessTokenCommand*)fromMap:(NSDictionary*)dict {
+  MSBOSetAccessTokenCommand* result = [[MSBOSetAccessTokenCommand alloc] init];
+  result.accessToken = dict[@"accessToken"];
+  if ((NSNull *)result.accessToken == [NSNull null]) {
+    result.accessToken = nil;
   }
   return result;
 }
 -(NSDictionary*)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.code ? self.code : [NSNull null]), @"code", nil];
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.accessToken ? self.accessToken : [NSNull null]), @"accessToken", nil];
 }
 @end
 
-@implementation MSBOMesiboMessage
-+(MSBOMesiboMessage*)fromMap:(NSDictionary*)dict {
-  MSBOMesiboMessage* result = [[MSBOMesiboMessage alloc] init];
+@implementation MSBOSetPushTokenResult
++(MSBOSetPushTokenResult*)fromMap:(NSDictionary*)dict {
+  MSBOSetPushTokenResult* result = [[MSBOSetPushTokenResult alloc] init];
+  result.result = dict[@"result"];
+  if ((NSNull *)result.result == [NSNull null]) {
+    result.result = nil;
+  }
+  return result;
+}
+-(NSDictionary*)toMap {
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.result ? self.result : [NSNull null]), @"result", nil];
+}
+@end
+
+@implementation MSBOSetPushTokenCommand
++(MSBOSetPushTokenCommand*)fromMap:(NSDictionary*)dict {
+  MSBOSetPushTokenCommand* result = [[MSBOSetPushTokenCommand alloc] init];
+  result.pushToken = dict[@"pushToken"];
+  if ((NSNull *)result.pushToken == [NSNull null]) {
+    result.pushToken = nil;
+  }
+  return result;
+}
+-(NSDictionary*)toMap {
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.pushToken ? self.pushToken : [NSNull null]), @"pushToken", nil];
+}
+@end
+
+@implementation MSBOChatHistoryResult
++(MSBOChatHistoryResult*)fromMap:(NSDictionary*)dict {
+  MSBOChatHistoryResult* result = [[MSBOChatHistoryResult alloc] init];
+  result.readCount = dict[@"readCount"];
+  if ((NSNull *)result.readCount == [NSNull null]) {
+    result.readCount = nil;
+  }
+  return result;
+}
+-(NSDictionary*)toMap {
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.readCount ? self.readCount : [NSNull null]), @"readCount", nil];
+}
+@end
+
+@implementation MSBOLoadChatHistoryCommand
++(MSBOLoadChatHistoryCommand*)fromMap:(NSDictionary*)dict {
+  MSBOLoadChatHistoryCommand* result = [[MSBOLoadChatHistoryCommand alloc] init];
+  result.peerAddress = dict[@"peerAddress"];
+  if ((NSNull *)result.peerAddress == [NSNull null]) {
+    result.peerAddress = nil;
+  }
+  result.count = dict[@"count"];
+  if ((NSNull *)result.count == [NSNull null]) {
+    result.count = nil;
+  }
+  return result;
+}
+-(NSDictionary*)toMap {
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.peerAddress ? self.peerAddress : [NSNull null]), @"peerAddress", (self.count ? self.count : [NSNull null]), @"count", nil];
+}
+@end
+
+@implementation MSBOChatSummaryResult
++(MSBOChatSummaryResult*)fromMap:(NSDictionary*)dict {
+  MSBOChatSummaryResult* result = [[MSBOChatSummaryResult alloc] init];
+  result.readCount = dict[@"readCount"];
+  if ((NSNull *)result.readCount == [NSNull null]) {
+    result.readCount = nil;
+  }
+  return result;
+}
+-(NSDictionary*)toMap {
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.readCount ? self.readCount : [NSNull null]), @"readCount", nil];
+}
+@end
+
+@implementation MSBOLoadChatSummaryCommand
++(MSBOLoadChatSummaryCommand*)fromMap:(NSDictionary*)dict {
+  MSBOLoadChatSummaryCommand* result = [[MSBOLoadChatSummaryCommand alloc] init];
+  result.count = dict[@"count"];
+  if ((NSNull *)result.count == [NSNull null]) {
+    result.count = nil;
+  }
+  return result;
+}
+-(NSDictionary*)toMap {
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.count ? self.count : [NSNull null]), @"count", nil];
+}
+@end
+
+@implementation MSBOSendMessageResult
++(MSBOSendMessageResult*)fromMap:(NSDictionary*)dict {
+  MSBOSendMessageResult* result = [[MSBOSendMessageResult alloc] init];
+  result.result = dict[@"result"];
+  if ((NSNull *)result.result == [NSNull null]) {
+    result.result = nil;
+  }
+  return result;
+}
+-(NSDictionary*)toMap {
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.result ? self.result : [NSNull null]), @"result", nil];
+}
+@end
+
+@implementation MSBOSendMessageCommand
++(MSBOSendMessageCommand*)fromMap:(NSDictionary*)dict {
+  MSBOSendMessageCommand* result = [[MSBOSendMessageCommand alloc] init];
   result.params = [MSBOMessageParams fromMap:dict[@"params"]];
   if ((NSNull *)result.params == [NSNull null]) {
     result.params = nil;
+  }
+  result.mid = dict[@"mid"];
+  if ((NSNull *)result.mid == [NSNull null]) {
+    result.mid = nil;
   }
   result.data = dict[@"data"];
   if ((NSNull *)result.data == [NSNull null]) {
@@ -329,10 +365,68 @@ static NSDictionary<NSString*, id>* wrapResult(NSDictionary *result, FlutterErro
   return result;
 }
 -(NSDictionary*)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.params ? [self.params toMap] : [NSNull null]), @"params", (self.data ? self.data : [NSNull null]), @"data", nil];
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.params ? [self.params toMap] : [NSNull null]), @"params", (self.mid ? self.mid : [NSNull null]), @"mid", (self.data ? self.data : [NSNull null]), @"data", nil];
 }
 @end
 
+@interface MSBOMesiboConnectionListener ()
+@property (nonatomic, strong) NSObject<FlutterBinaryMessenger>* binaryMessenger;
+@end
+
+@implementation MSBOMesiboConnectionListener
+- (instancetype)initWithBinaryMessenger:(NSObject<FlutterBinaryMessenger>*)binaryMessenger {
+  self = [super init];
+  if (self) {
+    _binaryMessenger = binaryMessenger;
+  }
+  return self;
+}
+
+- (void)onConnectionStatus:(MSBOConnectionStatus*)input completion:(void(^)(NSError* _Nullable))completion {
+  FlutterBasicMessageChannel *channel =
+    [FlutterBasicMessageChannel
+      messageChannelWithName:@"dev.flutter.pigeon.MesiboConnectionListener.onConnectionStatus"
+      binaryMessenger:self.binaryMessenger];
+  NSDictionary* inputMap = [input toMap];
+  [channel sendMessage:inputMap reply:^(id reply) {
+    completion(nil);
+  }];
+}
+@end
+@interface MSBOMesiboMessageListener ()
+@property (nonatomic, strong) NSObject<FlutterBinaryMessenger>* binaryMessenger;
+@end
+
+@implementation MSBOMesiboMessageListener
+- (instancetype)initWithBinaryMessenger:(NSObject<FlutterBinaryMessenger>*)binaryMessenger {
+  self = [super init];
+  if (self) {
+    _binaryMessenger = binaryMessenger;
+  }
+  return self;
+}
+
+- (void)onMessage:(MSBOMesiboMessage*)input completion:(void(^)(NSError* _Nullable))completion {
+  FlutterBasicMessageChannel *channel =
+    [FlutterBasicMessageChannel
+      messageChannelWithName:@"dev.flutter.pigeon.MesiboMessageListener.onMessage"
+      binaryMessenger:self.binaryMessenger];
+  NSDictionary* inputMap = [input toMap];
+  [channel sendMessage:inputMap reply:^(id reply) {
+    completion(nil);
+  }];
+}
+- (void)onMessageStatus:(MSBOMessageParams*)input completion:(void(^)(NSError* _Nullable))completion {
+  FlutterBasicMessageChannel *channel =
+    [FlutterBasicMessageChannel
+      messageChannelWithName:@"dev.flutter.pigeon.MesiboMessageListener.onMessageStatus"
+      binaryMessenger:self.binaryMessenger];
+  NSDictionary* inputMap = [input toMap];
+  [channel sendMessage:inputMap reply:^(id reply) {
+    completion(nil);
+  }];
+}
+@end
 void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<MSBOMesiboRealTimeApi> api) {
   {
     FlutterBasicMessageChannel *channel =
@@ -345,6 +439,23 @@ void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<M
         FlutterError *error;
         [api setAccessToken:input error:&error];
         callback(wrapResult(nil, error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [FlutterBasicMessageChannel
+        messageChannelWithName:@"dev.flutter.pigeon.MesiboRealTimeApi.setPushToken"
+        binaryMessenger:binaryMessenger];
+    if (api) {
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        MSBOSetPushTokenCommand *input = [MSBOSetPushTokenCommand fromMap:message];
+        FlutterError *error;
+        MSBOSetPushTokenResult *output = [api setPushToken:input error:&error];
+        callback(wrapResult([output toMap], error));
       }];
     }
     else {
@@ -419,61 +530,3 @@ void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<M
     }
   }
 }
-@interface MSBOMesiboConnectionListener ()
-@property (nonatomic, strong) NSObject<FlutterBinaryMessenger>* binaryMessenger;
-@end
-
-@implementation MSBOMesiboConnectionListener
-- (instancetype)initWithBinaryMessenger:(NSObject<FlutterBinaryMessenger>*)binaryMessenger {
-  self = [super init];
-  if (self) {
-    _binaryMessenger = binaryMessenger;
-  }
-  return self;
-}
-
-- (void)onConnectionStatus:(MSBOConnectionStatus*)input completion:(void(^)(NSError* _Nullable))completion {
-  FlutterBasicMessageChannel *channel =
-    [FlutterBasicMessageChannel
-      messageChannelWithName:@"dev.flutter.pigeon.MesiboConnectionListener.onConnectionStatus"
-      binaryMessenger:self.binaryMessenger];
-  NSDictionary* inputMap = [input toMap];
-  [channel sendMessage:inputMap reply:^(id reply) {
-    completion(nil);
-  }];
-}
-@end
-@interface MSBOMesiboMessageListener ()
-@property (nonatomic, strong) NSObject<FlutterBinaryMessenger>* binaryMessenger;
-@end
-
-@implementation MSBOMesiboMessageListener
-- (instancetype)initWithBinaryMessenger:(NSObject<FlutterBinaryMessenger>*)binaryMessenger {
-  self = [super init];
-  if (self) {
-    _binaryMessenger = binaryMessenger;
-  }
-  return self;
-}
-
-- (void)onMessage:(MSBOMesiboMessage*)input completion:(void(^)(NSError* _Nullable))completion {
-  FlutterBasicMessageChannel *channel =
-    [FlutterBasicMessageChannel
-      messageChannelWithName:@"dev.flutter.pigeon.MesiboMessageListener.onMessage"
-      binaryMessenger:self.binaryMessenger];
-  NSDictionary* inputMap = [input toMap];
-  [channel sendMessage:inputMap reply:^(id reply) {
-    completion(nil);
-  }];
-}
-- (void)onMessageStatus:(MSBOMessageParams*)input completion:(void(^)(NSError* _Nullable))completion {
-  FlutterBasicMessageChannel *channel =
-    [FlutterBasicMessageChannel
-      messageChannelWithName:@"dev.flutter.pigeon.MesiboMessageListener.onMessageStatus"
-      binaryMessenger:self.binaryMessenger];
-  NSDictionary* inputMap = [input toMap];
-  [channel sendMessage:inputMap reply:^(id reply) {
-    completion(nil);
-  }];
-}
-@end

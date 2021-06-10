@@ -15,7 +15,6 @@ import 'package:observable_ish/event/event.dart';
 import 'mesibo_binding.dart';
 
 class Mesibo {
-
   MesiboRealTimeApi apiBinding = MesiboRealTimeApi();
 
   /// Connection listener that handles calls from platform channels (and delegates to actual app)
@@ -25,23 +24,26 @@ class Mesibo {
   _MesiboMessageListenerImpl _messageListenerImpl;
 
   final Emitter<MesiboMessage> _realTimeMessageEmitter = Emitter();
+
   /// Stream of incoming realtime messages.
   /// Messages that were received as a result of a DB request or DB summary are
   /// mot published to this stream.
-  Stream<MesiboMessage> get realTimeMessageStream => _realTimeMessageEmitter.asStream;
+  Stream<MesiboMessage> get realTimeMessageStream =>
+      _realTimeMessageEmitter.asStream;
 
   final Emitter<MessageParams> _messageStatusEmitter = Emitter();
+
   /// Stream of message status updates.
-  Stream<MessageParams> get messageStatusStream => _messageStatusEmitter.asStream;
+  Stream<MessageParams> get messageStatusStream =>
+      _messageStatusEmitter.asStream;
 
   static final Mesibo _instance = Mesibo._privateConstructor();
   static Mesibo get instance => _instance;
 
   Mesibo._privateConstructor() {
-    _connectionListenerImpl =
-        _MesiboConnectionListenerImpl();
-    _messageListenerImpl =
-        _MesiboMessageListenerImpl(_realTimeMessageEmitter, _messageStatusEmitter);
+    _connectionListenerImpl = _MesiboConnectionListenerImpl();
+    _messageListenerImpl = _MesiboMessageListenerImpl(
+        _realTimeMessageEmitter, _messageStatusEmitter);
 
     // Setup platform channels for callbacks
     MesiboConnectionListener.setup(_connectionListenerImpl);
@@ -51,6 +53,19 @@ class Mesibo {
   Future<void> setAccessToken(String accessToken) {
     return apiBinding
         .setAccessToken(SetAccessTokenCommand()..accessToken = accessToken);
+  }
+
+  Future<void> setPushToken(String pushToken) async {
+    SetPushTokenResult result = await apiBinding.setPushToken(
+      SetPushTokenCommand()..pushToken = pushToken,
+    );
+
+    /*
+     * TODO Throw exception when we are sure about the result codes
+     */
+    if (result.result !=  0) {
+      print('MESIBO: setPushToken result != 0 (returned: ${result.result})');
+    }
   }
 
   Future<void> start() {
@@ -92,7 +107,8 @@ class Mesibo {
     return messages;
   }
 
-  Future<void> sendMessage(MessageParams params, int mid, Uint8List data) async {
+  Future<void> sendMessage(
+      MessageParams params, int mid, Uint8List data) async {
     print('MESIBO: Sending message (mid=$mid)');
     SendMessageCommand cmd = SendMessageCommand();
     // IMPORTANT workaround: check method docs
@@ -144,7 +160,8 @@ class Mesibo {
   /*
    * BUG WORKAROUND: Check docs on UserProfile in pigeons/mesibo.dart template.
    */
-  static final NULL_USER_PROFILE = UserProfile()..do_not_use_in_app_code_isProfileNull = true;
+  static final NULL_USER_PROFILE = UserProfile()
+    ..do_not_use_in_app_code_isProfileNull = true;
 
   /* =====
  * static constANTS copied from Android SDK 'Mesibo' class
@@ -360,9 +377,10 @@ class Mesibo {
 /// Needed because Pigeon doesn't allow us to define methods on
 /// bridge classes.
 extension MesiboMessageMethodExtension on MesiboMessage {
-
   /// Whether the message is an incoming message
-  bool isIncoming() => params.status == Mesibo.MSGSTATUS_RECEIVEDNEW || params.status == Mesibo.MSGSTATUS_RECEIVEDREAD;
+  bool isIncoming() =>
+      params.status == Mesibo.MSGSTATUS_RECEIVEDNEW ||
+      params.status == Mesibo.MSGSTATUS_RECEIVEDREAD;
 }
 
 /// NOTE: This is only an internal implementation of the interface generated
@@ -371,7 +389,6 @@ extension MesiboMessageMethodExtension on MesiboMessage {
 /// TODO This interface should either call a more abstract interface or publish
 /// events to a stream in the future that are used by the application.
 class _MesiboConnectionListenerImpl implements MesiboConnectionListener {
-
   @override
   void onConnectionStatus(ConnectionStatus status) {
     String statusName = Mesibo.getConnectionStatusName(status.code);
@@ -387,7 +404,6 @@ class _MesiboConnectionListenerImpl implements MesiboConnectionListener {
 /// Also realtime messages are sent to a stream that is published by the
 /// [Mesibo] abstraction to be used by application code.
 class _MesiboMessageListenerImpl implements MesiboMessageListener {
-
   /// Emitter to publish real time messages.
   final Emitter<MesiboMessage> realTimeMessageEmitter;
 
@@ -403,7 +419,8 @@ class _MesiboMessageListenerImpl implements MesiboMessageListener {
   /// Number of messages the current running read call expects to receive.
   int _expectedMessageReadCount;
 
-  _MesiboMessageListenerImpl(this.realTimeMessageEmitter, this.messageStatusEmitter);
+  _MesiboMessageListenerImpl(
+      this.realTimeMessageEmitter, this.messageStatusEmitter);
 
   @override
   void onMessage(MesiboMessage message) {
@@ -434,7 +451,8 @@ class _MesiboMessageListenerImpl implements MesiboMessageListener {
     print('new summary buffer size: ${_messageReadBuffer.length}');
 
     if (_messageReadCompleter == null) {
-      print('MESIBO: ERROR: Received chat summary message, but not waiting for messages (yet)');
+      print(
+          'MESIBO: ERROR: Received chat summary message, but not waiting for messages (yet)');
       return;
     }
 
@@ -452,7 +470,8 @@ class _MesiboMessageListenerImpl implements MesiboMessageListener {
 
   /// Called internally when a new realtime message is received.
   void _onRealtimeMessage(MesiboMessage message) {
-    print('Mesibo onRealTimeMessage: mid=${message.params.mid}, peer=${message.params.peer}');
+    print(
+        'Mesibo onRealTimeMessage: mid=${message.params.mid}, peer=${message.params.peer}');
 
     realTimeMessageEmitter.emitOne(message);
   }

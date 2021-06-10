@@ -36,11 +36,25 @@ class AndroidMesiboRealTimeApi(private val messageListener: Mesibo.MessageListen
         val setAccessTokenResult = Mesibo.setAccessToken(cmd!!.accessToken)
         Log.d(TAG, "setAccessToken result code: $setAccessTokenResult")
 
-
         /*
          * TODO Separate the setDatabase into an own method
          */
         Mesibo.setDatabase("mydb", 0)
+    }
+
+    override fun setPushToken(cmd: MesiboBinding.SetPushTokenCommand?): MesiboBinding.SetPushTokenResult {
+        val success: Boolean = Mesibo.setPushToken(cmd!!.pushToken)
+        Log.d(TAG, "setPushToken result: $success")
+
+        val result = MesiboBinding.SetPushTokenResult()
+        /*
+         * Our assumption is that the result of the native method indicates success/fail. However,
+         * on iOS we get an int32 result so we need some investigation on this and interpret
+         * the common result type (int32) in the Flutter layer.
+         */
+        // TODO Check the assumption above
+        result.result = if (success) 0 else -1
+        return result
     }
 
     override fun start() {

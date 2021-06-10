@@ -59,6 +59,10 @@ class SetAccessTokenCommand {
   SetAccessTokenCommand(this.accessToken);
 }
 
+class SetPushTokenCommand {
+  String pushToken;
+}
+
 class LoadChatHistoryCommand {
   String peerAddress;
   int count;
@@ -78,6 +82,8 @@ class SendMessageCommand {
 abstract class MesiboRealTimeApi {
   void setAccessToken(SetAccessTokenCommand cmd);
 
+  SetPushTokenResult setPushToken(SetPushTokenCommand cmd);
+
   void start();
 
   // Load chat history for with specific user (peer address)
@@ -92,6 +98,10 @@ abstract class MesiboRealTimeApi {
   ///
   /// Check the result code for success.
   SendMessageResult sendMessage(SendMessageCommand cmd);
+}
+
+class SetPushTokenResult {
+  int result;
 }
 
 class ChatHistoryResult {

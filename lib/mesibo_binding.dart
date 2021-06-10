@@ -7,123 +7,37 @@ import 'dart:typed_data' show Uint8List, Int32List, Int64List, Float64List;
 
 import 'package:flutter/services.dart';
 
-class SetAccessTokenCommand {
-  String accessToken;
+class ConnectionStatus {
+  int code;
 
   Object encode() {
     final Map<Object, Object> pigeonMap = <Object, Object>{};
-    pigeonMap['accessToken'] = accessToken;
+    pigeonMap['code'] = code;
     return pigeonMap;
   }
 
-  static SetAccessTokenCommand decode(Object message) {
+  static ConnectionStatus decode(Object message) {
     final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return SetAccessTokenCommand()
-      ..accessToken = pigeonMap['accessToken'] as String;
+    return ConnectionStatus()
+      ..code = pigeonMap['code'] as int;
   }
 }
 
-class ChatHistoryResult {
-  int readCount;
-
-  Object encode() {
-    final Map<Object, Object> pigeonMap = <Object, Object>{};
-    pigeonMap['readCount'] = readCount;
-    return pigeonMap;
-  }
-
-  static ChatHistoryResult decode(Object message) {
-    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return ChatHistoryResult()
-      ..readCount = pigeonMap['readCount'] as int;
-  }
-}
-
-class LoadChatHistoryCommand {
-  String peerAddress;
-  int count;
-
-  Object encode() {
-    final Map<Object, Object> pigeonMap = <Object, Object>{};
-    pigeonMap['peerAddress'] = peerAddress;
-    pigeonMap['count'] = count;
-    return pigeonMap;
-  }
-
-  static LoadChatHistoryCommand decode(Object message) {
-    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return LoadChatHistoryCommand()
-      ..peerAddress = pigeonMap['peerAddress'] as String
-      ..count = pigeonMap['count'] as int;
-  }
-}
-
-class ChatSummaryResult {
-  int readCount;
-
-  Object encode() {
-    final Map<Object, Object> pigeonMap = <Object, Object>{};
-    pigeonMap['readCount'] = readCount;
-    return pigeonMap;
-  }
-
-  static ChatSummaryResult decode(Object message) {
-    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return ChatSummaryResult()
-      ..readCount = pigeonMap['readCount'] as int;
-  }
-}
-
-class LoadChatSummaryCommand {
-  int count;
-
-  Object encode() {
-    final Map<Object, Object> pigeonMap = <Object, Object>{};
-    pigeonMap['count'] = count;
-    return pigeonMap;
-  }
-
-  static LoadChatSummaryCommand decode(Object message) {
-    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return LoadChatSummaryCommand()
-      ..count = pigeonMap['count'] as int;
-  }
-}
-
-class SendMessageResult {
-  int result;
-
-  Object encode() {
-    final Map<Object, Object> pigeonMap = <Object, Object>{};
-    pigeonMap['result'] = result;
-    return pigeonMap;
-  }
-
-  static SendMessageResult decode(Object message) {
-    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return SendMessageResult()
-      ..result = pigeonMap['result'] as int;
-  }
-}
-
-class SendMessageCommand {
+class MesiboMessage {
   MessageParams params;
-  int mid;
   Uint8List data;
 
   Object encode() {
     final Map<Object, Object> pigeonMap = <Object, Object>{};
     pigeonMap['params'] = params == null ? null : params.encode();
-    pigeonMap['mid'] = mid;
     pigeonMap['data'] = data;
     return pigeonMap;
   }
 
-  static SendMessageCommand decode(Object message) {
+  static MesiboMessage decode(Object message) {
     final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return SendMessageCommand()
+    return MesiboMessage()
       ..params = pigeonMap['params'] != null ? MessageParams.decode(pigeonMap['params']) : null
-      ..mid = pigeonMap['mid'] as int
       ..data = pigeonMap['data'] as Uint8List;
   }
 }
@@ -232,38 +146,211 @@ class UserProfile {
   }
 }
 
-class ConnectionStatus {
-  int code;
+class SetAccessTokenCommand {
+  String accessToken;
 
   Object encode() {
     final Map<Object, Object> pigeonMap = <Object, Object>{};
-    pigeonMap['code'] = code;
+    pigeonMap['accessToken'] = accessToken;
     return pigeonMap;
   }
 
-  static ConnectionStatus decode(Object message) {
+  static SetAccessTokenCommand decode(Object message) {
     final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return ConnectionStatus()
-      ..code = pigeonMap['code'] as int;
+    return SetAccessTokenCommand()
+      ..accessToken = pigeonMap['accessToken'] as String;
   }
 }
 
-class MesiboMessage {
+class SetPushTokenResult {
+  int result;
+
+  Object encode() {
+    final Map<Object, Object> pigeonMap = <Object, Object>{};
+    pigeonMap['result'] = result;
+    return pigeonMap;
+  }
+
+  static SetPushTokenResult decode(Object message) {
+    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
+    return SetPushTokenResult()
+      ..result = pigeonMap['result'] as int;
+  }
+}
+
+class SetPushTokenCommand {
+  String pushToken;
+
+  Object encode() {
+    final Map<Object, Object> pigeonMap = <Object, Object>{};
+    pigeonMap['pushToken'] = pushToken;
+    return pigeonMap;
+  }
+
+  static SetPushTokenCommand decode(Object message) {
+    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
+    return SetPushTokenCommand()
+      ..pushToken = pigeonMap['pushToken'] as String;
+  }
+}
+
+class ChatHistoryResult {
+  int readCount;
+
+  Object encode() {
+    final Map<Object, Object> pigeonMap = <Object, Object>{};
+    pigeonMap['readCount'] = readCount;
+    return pigeonMap;
+  }
+
+  static ChatHistoryResult decode(Object message) {
+    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
+    return ChatHistoryResult()
+      ..readCount = pigeonMap['readCount'] as int;
+  }
+}
+
+class LoadChatHistoryCommand {
+  String peerAddress;
+  int count;
+
+  Object encode() {
+    final Map<Object, Object> pigeonMap = <Object, Object>{};
+    pigeonMap['peerAddress'] = peerAddress;
+    pigeonMap['count'] = count;
+    return pigeonMap;
+  }
+
+  static LoadChatHistoryCommand decode(Object message) {
+    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
+    return LoadChatHistoryCommand()
+      ..peerAddress = pigeonMap['peerAddress'] as String
+      ..count = pigeonMap['count'] as int;
+  }
+}
+
+class ChatSummaryResult {
+  int readCount;
+
+  Object encode() {
+    final Map<Object, Object> pigeonMap = <Object, Object>{};
+    pigeonMap['readCount'] = readCount;
+    return pigeonMap;
+  }
+
+  static ChatSummaryResult decode(Object message) {
+    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
+    return ChatSummaryResult()
+      ..readCount = pigeonMap['readCount'] as int;
+  }
+}
+
+class LoadChatSummaryCommand {
+  int count;
+
+  Object encode() {
+    final Map<Object, Object> pigeonMap = <Object, Object>{};
+    pigeonMap['count'] = count;
+    return pigeonMap;
+  }
+
+  static LoadChatSummaryCommand decode(Object message) {
+    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
+    return LoadChatSummaryCommand()
+      ..count = pigeonMap['count'] as int;
+  }
+}
+
+class SendMessageResult {
+  int result;
+
+  Object encode() {
+    final Map<Object, Object> pigeonMap = <Object, Object>{};
+    pigeonMap['result'] = result;
+    return pigeonMap;
+  }
+
+  static SendMessageResult decode(Object message) {
+    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
+    return SendMessageResult()
+      ..result = pigeonMap['result'] as int;
+  }
+}
+
+class SendMessageCommand {
   MessageParams params;
+  int mid;
   Uint8List data;
 
   Object encode() {
     final Map<Object, Object> pigeonMap = <Object, Object>{};
     pigeonMap['params'] = params == null ? null : params.encode();
+    pigeonMap['mid'] = mid;
     pigeonMap['data'] = data;
     return pigeonMap;
   }
 
-  static MesiboMessage decode(Object message) {
+  static SendMessageCommand decode(Object message) {
     final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
-    return MesiboMessage()
+    return SendMessageCommand()
       ..params = pigeonMap['params'] != null ? MessageParams.decode(pigeonMap['params']) : null
+      ..mid = pigeonMap['mid'] as int
       ..data = pigeonMap['data'] as Uint8List;
+  }
+}
+
+abstract class MesiboConnectionListener {
+  void onConnectionStatus(ConnectionStatus arg);
+  static void setup(MesiboConnectionListener api) {
+    {
+      const BasicMessageChannel<Object> channel =
+          BasicMessageChannel<Object>('dev.flutter.pigeon.MesiboConnectionListener.onConnectionStatus', StandardMessageCodec());
+      if (api == null) {
+        channel.setMessageHandler(null);
+      } else {
+        channel.setMessageHandler((Object message) async {
+          assert(message != null, 'Argument for dev.flutter.pigeon.MesiboConnectionListener.onConnectionStatus was null. Expected ConnectionStatus.');
+          final ConnectionStatus input = ConnectionStatus.decode(message);
+          api.onConnectionStatus(input);
+          return;
+        });
+      }
+    }
+  }
+}
+
+abstract class MesiboMessageListener {
+  void onMessage(MesiboMessage arg);
+  void onMessageStatus(MessageParams arg);
+  static void setup(MesiboMessageListener api) {
+    {
+      const BasicMessageChannel<Object> channel =
+          BasicMessageChannel<Object>('dev.flutter.pigeon.MesiboMessageListener.onMessage', StandardMessageCodec());
+      if (api == null) {
+        channel.setMessageHandler(null);
+      } else {
+        channel.setMessageHandler((Object message) async {
+          assert(message != null, 'Argument for dev.flutter.pigeon.MesiboMessageListener.onMessage was null. Expected MesiboMessage.');
+          final MesiboMessage input = MesiboMessage.decode(message);
+          api.onMessage(input);
+          return;
+        });
+      }
+    }
+    {
+      const BasicMessageChannel<Object> channel =
+          BasicMessageChannel<Object>('dev.flutter.pigeon.MesiboMessageListener.onMessageStatus', StandardMessageCodec());
+      if (api == null) {
+        channel.setMessageHandler(null);
+      } else {
+        channel.setMessageHandler((Object message) async {
+          assert(message != null, 'Argument for dev.flutter.pigeon.MesiboMessageListener.onMessageStatus was null. Expected MessageParams.');
+          final MessageParams input = MessageParams.decode(message);
+          api.onMessageStatus(input);
+          return;
+        });
+      }
+    }
   }
 }
 
@@ -288,6 +375,29 @@ class MesiboRealTimeApi {
       );
     } else {
       // noop
+    }
+  }
+
+  Future<SetPushTokenResult> setPushToken(SetPushTokenCommand arg) async {
+    final Object encoded = arg.encode();
+    const BasicMessageChannel<Object> channel =
+        BasicMessageChannel<Object>('dev.flutter.pigeon.MesiboRealTimeApi.setPushToken', StandardMessageCodec());
+    final Map<Object, Object> replyMap = await channel.send(encoded) as Map<Object, Object>;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+        details: null,
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object, Object> error = (replyMap['error'] as Map<Object, Object>);
+      throw PlatformException(
+        code: (error['code'] as String),
+        message: error['message'] as String,
+        details: error['details'],
+      );
+    } else {
+      return SetPushTokenResult.decode(replyMap['result']);
     }
   }
 
@@ -379,61 +489,6 @@ class MesiboRealTimeApi {
       );
     } else {
       return SendMessageResult.decode(replyMap['result']);
-    }
-  }
-}
-
-abstract class MesiboConnectionListener {
-  void onConnectionStatus(ConnectionStatus arg);
-  static void setup(MesiboConnectionListener api) {
-    {
-      const BasicMessageChannel<Object> channel =
-          BasicMessageChannel<Object>('dev.flutter.pigeon.MesiboConnectionListener.onConnectionStatus', StandardMessageCodec());
-      if (api == null) {
-        channel.setMessageHandler(null);
-      } else {
-        channel.setMessageHandler((Object message) async {
-          assert(message != null, 'Argument for dev.flutter.pigeon.MesiboConnectionListener.onConnectionStatus was null. Expected ConnectionStatus.');
-          final ConnectionStatus input = ConnectionStatus.decode(message);
-          api.onConnectionStatus(input);
-          return;
-        });
-      }
-    }
-  }
-}
-
-abstract class MesiboMessageListener {
-  void onMessage(MesiboMessage arg);
-  void onMessageStatus(MessageParams arg);
-  static void setup(MesiboMessageListener api) {
-    {
-      const BasicMessageChannel<Object> channel =
-          BasicMessageChannel<Object>('dev.flutter.pigeon.MesiboMessageListener.onMessage', StandardMessageCodec());
-      if (api == null) {
-        channel.setMessageHandler(null);
-      } else {
-        channel.setMessageHandler((Object message) async {
-          assert(message != null, 'Argument for dev.flutter.pigeon.MesiboMessageListener.onMessage was null. Expected MesiboMessage.');
-          final MesiboMessage input = MesiboMessage.decode(message);
-          api.onMessage(input);
-          return;
-        });
-      }
-    }
-    {
-      const BasicMessageChannel<Object> channel =
-          BasicMessageChannel<Object>('dev.flutter.pigeon.MesiboMessageListener.onMessageStatus', StandardMessageCodec());
-      if (api == null) {
-        channel.setMessageHandler(null);
-      } else {
-        channel.setMessageHandler((Object message) async {
-          assert(message != null, 'Argument for dev.flutter.pigeon.MesiboMessageListener.onMessageStatus was null. Expected MessageParams.');
-          final MessageParams input = MessageParams.decode(message);
-          api.onMessageStatus(input);
-          return;
-        });
-      }
     }
   }
 }

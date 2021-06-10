@@ -15,135 +15,29 @@ import java.util.HashMap;
 public class MesiboBinding {
 
   /** Generated class from Pigeon that represents data sent in messages. */
-  public static class SetAccessTokenCommand {
-    private String accessToken;
-    public String getAccessToken() { return accessToken; }
-    public void setAccessToken(String setterArg) { this.accessToken = setterArg; }
+  public static class ConnectionStatus {
+    private Long code;
+    public Long getCode() { return code; }
+    public void setCode(Long setterArg) { this.code = setterArg; }
 
     Map<String, Object> toMap() {
       Map<String, Object> toMapResult = new HashMap<>();
-      toMapResult.put("accessToken", accessToken);
+      toMapResult.put("code", code);
       return toMapResult;
     }
-    static SetAccessTokenCommand fromMap(Map<String, Object> map) {
-      SetAccessTokenCommand fromMapResult = new SetAccessTokenCommand();
-      Object accessToken = map.get("accessToken");
-      fromMapResult.accessToken = (String)accessToken;
+    static ConnectionStatus fromMap(Map<String, Object> map) {
+      ConnectionStatus fromMapResult = new ConnectionStatus();
+      Object code = map.get("code");
+      fromMapResult.code = (code == null) ? null : ((code instanceof Integer) ? (Integer)code : (Long)code);
       return fromMapResult;
     }
   }
 
   /** Generated class from Pigeon that represents data sent in messages. */
-  public static class ChatHistoryResult {
-    private Long readCount;
-    public Long getReadCount() { return readCount; }
-    public void setReadCount(Long setterArg) { this.readCount = setterArg; }
-
-    Map<String, Object> toMap() {
-      Map<String, Object> toMapResult = new HashMap<>();
-      toMapResult.put("readCount", readCount);
-      return toMapResult;
-    }
-    static ChatHistoryResult fromMap(Map<String, Object> map) {
-      ChatHistoryResult fromMapResult = new ChatHistoryResult();
-      Object readCount = map.get("readCount");
-      fromMapResult.readCount = (readCount == null) ? null : ((readCount instanceof Integer) ? (Integer)readCount : (Long)readCount);
-      return fromMapResult;
-    }
-  }
-
-  /** Generated class from Pigeon that represents data sent in messages. */
-  public static class LoadChatHistoryCommand {
-    private String peerAddress;
-    public String getPeerAddress() { return peerAddress; }
-    public void setPeerAddress(String setterArg) { this.peerAddress = setterArg; }
-
-    private Long count;
-    public Long getCount() { return count; }
-    public void setCount(Long setterArg) { this.count = setterArg; }
-
-    Map<String, Object> toMap() {
-      Map<String, Object> toMapResult = new HashMap<>();
-      toMapResult.put("peerAddress", peerAddress);
-      toMapResult.put("count", count);
-      return toMapResult;
-    }
-    static LoadChatHistoryCommand fromMap(Map<String, Object> map) {
-      LoadChatHistoryCommand fromMapResult = new LoadChatHistoryCommand();
-      Object peerAddress = map.get("peerAddress");
-      fromMapResult.peerAddress = (String)peerAddress;
-      Object count = map.get("count");
-      fromMapResult.count = (count == null) ? null : ((count instanceof Integer) ? (Integer)count : (Long)count);
-      return fromMapResult;
-    }
-  }
-
-  /** Generated class from Pigeon that represents data sent in messages. */
-  public static class ChatSummaryResult {
-    private Long readCount;
-    public Long getReadCount() { return readCount; }
-    public void setReadCount(Long setterArg) { this.readCount = setterArg; }
-
-    Map<String, Object> toMap() {
-      Map<String, Object> toMapResult = new HashMap<>();
-      toMapResult.put("readCount", readCount);
-      return toMapResult;
-    }
-    static ChatSummaryResult fromMap(Map<String, Object> map) {
-      ChatSummaryResult fromMapResult = new ChatSummaryResult();
-      Object readCount = map.get("readCount");
-      fromMapResult.readCount = (readCount == null) ? null : ((readCount instanceof Integer) ? (Integer)readCount : (Long)readCount);
-      return fromMapResult;
-    }
-  }
-
-  /** Generated class from Pigeon that represents data sent in messages. */
-  public static class LoadChatSummaryCommand {
-    private Long count;
-    public Long getCount() { return count; }
-    public void setCount(Long setterArg) { this.count = setterArg; }
-
-    Map<String, Object> toMap() {
-      Map<String, Object> toMapResult = new HashMap<>();
-      toMapResult.put("count", count);
-      return toMapResult;
-    }
-    static LoadChatSummaryCommand fromMap(Map<String, Object> map) {
-      LoadChatSummaryCommand fromMapResult = new LoadChatSummaryCommand();
-      Object count = map.get("count");
-      fromMapResult.count = (count == null) ? null : ((count instanceof Integer) ? (Integer)count : (Long)count);
-      return fromMapResult;
-    }
-  }
-
-  /** Generated class from Pigeon that represents data sent in messages. */
-  public static class SendMessageResult {
-    private Long result;
-    public Long getResult() { return result; }
-    public void setResult(Long setterArg) { this.result = setterArg; }
-
-    Map<String, Object> toMap() {
-      Map<String, Object> toMapResult = new HashMap<>();
-      toMapResult.put("result", result);
-      return toMapResult;
-    }
-    static SendMessageResult fromMap(Map<String, Object> map) {
-      SendMessageResult fromMapResult = new SendMessageResult();
-      Object result = map.get("result");
-      fromMapResult.result = (result == null) ? null : ((result instanceof Integer) ? (Integer)result : (Long)result);
-      return fromMapResult;
-    }
-  }
-
-  /** Generated class from Pigeon that represents data sent in messages. */
-  public static class SendMessageCommand {
+  public static class MesiboMessage {
     private MessageParams params;
     public MessageParams getParams() { return params; }
     public void setParams(MessageParams setterArg) { this.params = setterArg; }
-
-    private Long mid;
-    public Long getMid() { return mid; }
-    public void setMid(Long setterArg) { this.mid = setterArg; }
 
     private byte[] data;
     public byte[] getData() { return data; }
@@ -152,16 +46,13 @@ public class MesiboBinding {
     Map<String, Object> toMap() {
       Map<String, Object> toMapResult = new HashMap<>();
       toMapResult.put("params", params.toMap());
-      toMapResult.put("mid", mid);
       toMapResult.put("data", data);
       return toMapResult;
     }
-    static SendMessageCommand fromMap(Map<String, Object> map) {
-      SendMessageCommand fromMapResult = new SendMessageCommand();
+    static MesiboMessage fromMap(Map<String, Object> map) {
+      MesiboMessage fromMapResult = new MesiboMessage();
       Object params = map.get("params");
       fromMapResult.params = MessageParams.fromMap((Map)params);
-      Object mid = map.get("mid");
-      fromMapResult.mid = (mid == null) ? null : ((mid instanceof Integer) ? (Integer)mid : (Long)mid);
       Object data = map.get("data");
       fromMapResult.data = (byte[])data;
       return fromMapResult;
@@ -375,29 +266,173 @@ public class MesiboBinding {
   }
 
   /** Generated class from Pigeon that represents data sent in messages. */
-  public static class ConnectionStatus {
-    private Long code;
-    public Long getCode() { return code; }
-    public void setCode(Long setterArg) { this.code = setterArg; }
+  public static class SetAccessTokenCommand {
+    private String accessToken;
+    public String getAccessToken() { return accessToken; }
+    public void setAccessToken(String setterArg) { this.accessToken = setterArg; }
 
     Map<String, Object> toMap() {
       Map<String, Object> toMapResult = new HashMap<>();
-      toMapResult.put("code", code);
+      toMapResult.put("accessToken", accessToken);
       return toMapResult;
     }
-    static ConnectionStatus fromMap(Map<String, Object> map) {
-      ConnectionStatus fromMapResult = new ConnectionStatus();
-      Object code = map.get("code");
-      fromMapResult.code = (code == null) ? null : ((code instanceof Integer) ? (Integer)code : (Long)code);
+    static SetAccessTokenCommand fromMap(Map<String, Object> map) {
+      SetAccessTokenCommand fromMapResult = new SetAccessTokenCommand();
+      Object accessToken = map.get("accessToken");
+      fromMapResult.accessToken = (String)accessToken;
       return fromMapResult;
     }
   }
 
   /** Generated class from Pigeon that represents data sent in messages. */
-  public static class MesiboMessage {
+  public static class SetPushTokenResult {
+    private Long result;
+    public Long getResult() { return result; }
+    public void setResult(Long setterArg) { this.result = setterArg; }
+
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("result", result);
+      return toMapResult;
+    }
+    static SetPushTokenResult fromMap(Map<String, Object> map) {
+      SetPushTokenResult fromMapResult = new SetPushTokenResult();
+      Object result = map.get("result");
+      fromMapResult.result = (result == null) ? null : ((result instanceof Integer) ? (Integer)result : (Long)result);
+      return fromMapResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class SetPushTokenCommand {
+    private String pushToken;
+    public String getPushToken() { return pushToken; }
+    public void setPushToken(String setterArg) { this.pushToken = setterArg; }
+
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("pushToken", pushToken);
+      return toMapResult;
+    }
+    static SetPushTokenCommand fromMap(Map<String, Object> map) {
+      SetPushTokenCommand fromMapResult = new SetPushTokenCommand();
+      Object pushToken = map.get("pushToken");
+      fromMapResult.pushToken = (String)pushToken;
+      return fromMapResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class ChatHistoryResult {
+    private Long readCount;
+    public Long getReadCount() { return readCount; }
+    public void setReadCount(Long setterArg) { this.readCount = setterArg; }
+
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("readCount", readCount);
+      return toMapResult;
+    }
+    static ChatHistoryResult fromMap(Map<String, Object> map) {
+      ChatHistoryResult fromMapResult = new ChatHistoryResult();
+      Object readCount = map.get("readCount");
+      fromMapResult.readCount = (readCount == null) ? null : ((readCount instanceof Integer) ? (Integer)readCount : (Long)readCount);
+      return fromMapResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class LoadChatHistoryCommand {
+    private String peerAddress;
+    public String getPeerAddress() { return peerAddress; }
+    public void setPeerAddress(String setterArg) { this.peerAddress = setterArg; }
+
+    private Long count;
+    public Long getCount() { return count; }
+    public void setCount(Long setterArg) { this.count = setterArg; }
+
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("peerAddress", peerAddress);
+      toMapResult.put("count", count);
+      return toMapResult;
+    }
+    static LoadChatHistoryCommand fromMap(Map<String, Object> map) {
+      LoadChatHistoryCommand fromMapResult = new LoadChatHistoryCommand();
+      Object peerAddress = map.get("peerAddress");
+      fromMapResult.peerAddress = (String)peerAddress;
+      Object count = map.get("count");
+      fromMapResult.count = (count == null) ? null : ((count instanceof Integer) ? (Integer)count : (Long)count);
+      return fromMapResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class ChatSummaryResult {
+    private Long readCount;
+    public Long getReadCount() { return readCount; }
+    public void setReadCount(Long setterArg) { this.readCount = setterArg; }
+
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("readCount", readCount);
+      return toMapResult;
+    }
+    static ChatSummaryResult fromMap(Map<String, Object> map) {
+      ChatSummaryResult fromMapResult = new ChatSummaryResult();
+      Object readCount = map.get("readCount");
+      fromMapResult.readCount = (readCount == null) ? null : ((readCount instanceof Integer) ? (Integer)readCount : (Long)readCount);
+      return fromMapResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class LoadChatSummaryCommand {
+    private Long count;
+    public Long getCount() { return count; }
+    public void setCount(Long setterArg) { this.count = setterArg; }
+
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("count", count);
+      return toMapResult;
+    }
+    static LoadChatSummaryCommand fromMap(Map<String, Object> map) {
+      LoadChatSummaryCommand fromMapResult = new LoadChatSummaryCommand();
+      Object count = map.get("count");
+      fromMapResult.count = (count == null) ? null : ((count instanceof Integer) ? (Integer)count : (Long)count);
+      return fromMapResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class SendMessageResult {
+    private Long result;
+    public Long getResult() { return result; }
+    public void setResult(Long setterArg) { this.result = setterArg; }
+
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("result", result);
+      return toMapResult;
+    }
+    static SendMessageResult fromMap(Map<String, Object> map) {
+      SendMessageResult fromMapResult = new SendMessageResult();
+      Object result = map.get("result");
+      fromMapResult.result = (result == null) ? null : ((result instanceof Integer) ? (Integer)result : (Long)result);
+      return fromMapResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class SendMessageCommand {
     private MessageParams params;
     public MessageParams getParams() { return params; }
     public void setParams(MessageParams setterArg) { this.params = setterArg; }
+
+    private Long mid;
+    public Long getMid() { return mid; }
+    public void setMid(Long setterArg) { this.mid = setterArg; }
 
     private byte[] data;
     public byte[] getData() { return data; }
@@ -406,22 +441,72 @@ public class MesiboBinding {
     Map<String, Object> toMap() {
       Map<String, Object> toMapResult = new HashMap<>();
       toMapResult.put("params", params.toMap());
+      toMapResult.put("mid", mid);
       toMapResult.put("data", data);
       return toMapResult;
     }
-    static MesiboMessage fromMap(Map<String, Object> map) {
-      MesiboMessage fromMapResult = new MesiboMessage();
+    static SendMessageCommand fromMap(Map<String, Object> map) {
+      SendMessageCommand fromMapResult = new SendMessageCommand();
       Object params = map.get("params");
       fromMapResult.params = MessageParams.fromMap((Map)params);
+      Object mid = map.get("mid");
+      fromMapResult.mid = (mid == null) ? null : ((mid instanceof Integer) ? (Integer)mid : (Long)mid);
       Object data = map.get("data");
       fromMapResult.data = (byte[])data;
       return fromMapResult;
     }
   }
 
+  /** Generated class from Pigeon that represents Flutter messages that can be called from Java.*/
+  public static class MesiboConnectionListener {
+    private final BinaryMessenger binaryMessenger;
+    public MesiboConnectionListener(BinaryMessenger argBinaryMessenger){
+      this.binaryMessenger = argBinaryMessenger;
+    }
+    public interface Reply<T> {
+      void reply(T reply);
+    }
+    public void onConnectionStatus(ConnectionStatus argInput, Reply<Void> callback) {
+      BasicMessageChannel<Object> channel =
+          new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboConnectionListener.onConnectionStatus", new StandardMessageCodec());
+      Map<String, Object> inputMap = argInput.toMap();
+      channel.send(inputMap, channelReply -> {
+        callback.reply(null);
+      });
+    }
+  }
+
+  /** Generated class from Pigeon that represents Flutter messages that can be called from Java.*/
+  public static class MesiboMessageListener {
+    private final BinaryMessenger binaryMessenger;
+    public MesiboMessageListener(BinaryMessenger argBinaryMessenger){
+      this.binaryMessenger = argBinaryMessenger;
+    }
+    public interface Reply<T> {
+      void reply(T reply);
+    }
+    public void onMessage(MesiboMessage argInput, Reply<Void> callback) {
+      BasicMessageChannel<Object> channel =
+          new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboMessageListener.onMessage", new StandardMessageCodec());
+      Map<String, Object> inputMap = argInput.toMap();
+      channel.send(inputMap, channelReply -> {
+        callback.reply(null);
+      });
+    }
+    public void onMessageStatus(MessageParams argInput, Reply<Void> callback) {
+      BasicMessageChannel<Object> channel =
+          new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboMessageListener.onMessageStatus", new StandardMessageCodec());
+      Map<String, Object> inputMap = argInput.toMap();
+      channel.send(inputMap, channelReply -> {
+        callback.reply(null);
+      });
+    }
+  }
+
   /** Generated interface from Pigeon that represents a handler of messages from Flutter.*/
   public interface MesiboRealTimeApi {
     void setAccessToken(SetAccessTokenCommand arg);
+    SetPushTokenResult setPushToken(SetPushTokenCommand arg);
     void start();
     ChatHistoryResult loadChatHistory(LoadChatHistoryCommand arg);
     ChatSummaryResult loadChatSummary(LoadChatSummaryCommand arg);
@@ -440,6 +525,27 @@ public class MesiboBinding {
               SetAccessTokenCommand input = SetAccessTokenCommand.fromMap((Map<String, Object>)message);
               api.setAccessToken(input);
               wrapped.put("result", null);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboRealTimeApi.setPushToken", new StandardMessageCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              @SuppressWarnings("ConstantConditions")
+              SetPushTokenCommand input = SetPushTokenCommand.fromMap((Map<String, Object>)message);
+              SetPushTokenResult output = api.setPushToken(input);
+              wrapped.put("result", output.toMap());
             }
             catch (Error | RuntimeException exception) {
               wrapped.put("error", wrapError(exception));
@@ -532,52 +638,6 @@ public class MesiboBinding {
           channel.setMessageHandler(null);
         }
       }
-    }
-  }
-
-  /** Generated class from Pigeon that represents Flutter messages that can be called from Java.*/
-  public static class MesiboConnectionListener {
-    private final BinaryMessenger binaryMessenger;
-    public MesiboConnectionListener(BinaryMessenger argBinaryMessenger){
-      this.binaryMessenger = argBinaryMessenger;
-    }
-    public interface Reply<T> {
-      void reply(T reply);
-    }
-    public void onConnectionStatus(ConnectionStatus argInput, Reply<Void> callback) {
-      BasicMessageChannel<Object> channel =
-          new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboConnectionListener.onConnectionStatus", new StandardMessageCodec());
-      Map<String, Object> inputMap = argInput.toMap();
-      channel.send(inputMap, channelReply -> {
-        callback.reply(null);
-      });
-    }
-  }
-
-  /** Generated class from Pigeon that represents Flutter messages that can be called from Java.*/
-  public static class MesiboMessageListener {
-    private final BinaryMessenger binaryMessenger;
-    public MesiboMessageListener(BinaryMessenger argBinaryMessenger){
-      this.binaryMessenger = argBinaryMessenger;
-    }
-    public interface Reply<T> {
-      void reply(T reply);
-    }
-    public void onMessage(MesiboMessage argInput, Reply<Void> callback) {
-      BasicMessageChannel<Object> channel =
-          new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboMessageListener.onMessage", new StandardMessageCodec());
-      Map<String, Object> inputMap = argInput.toMap();
-      channel.send(inputMap, channelReply -> {
-        callback.reply(null);
-      });
-    }
-    public void onMessageStatus(MessageParams argInput, Reply<Void> callback) {
-      BasicMessageChannel<Object> channel =
-          new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboMessageListener.onMessageStatus", new StandardMessageCodec());
-      Map<String, Object> inputMap = argInput.toMap();
-      channel.send(inputMap, channelReply -> {
-        callback.reply(null);
-      });
     }
   }
   private static Map<String, Object> wrapError(Throwable exception) {

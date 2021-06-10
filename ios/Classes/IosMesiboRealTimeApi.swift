@@ -31,6 +31,18 @@ class IosMesiboRealTimeApi: MSBOMesiboRealTimeApi {
         os_log("setDatabaseResult result: %{public}@", log: OSLog.mesiboIosBinding, type: .info, "\(setDbResult)")
     }
     
+    func setPushToken(_ cmd: MSBOSetPushTokenCommand, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) ->
+            MSBOSetPushTokenResult? {
+        os_log("setPushToken called", log: OSLog.mesiboIosBinding, type: .info)
+        
+        let resultCode = Mesibo.getInstance()!.setPushToken(cmd.pushToken)
+        os_log("setPushToken result: %{public}@", log: OSLog.mesiboIosBinding, type: .info, "\(resultCode)")
+        
+        let result = MSBOSetPushTokenResult.init()
+        result.result = resultCode as NSNumber
+        return result
+    }
+    
     func start(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
         os_log("start called", log: OSLog.mesiboIosBinding, type: .info)
         

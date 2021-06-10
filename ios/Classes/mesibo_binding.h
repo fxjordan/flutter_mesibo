@@ -7,46 +7,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class MSBOConnectionStatus;
+@class MSBOMesiboMessage;
+@class MSBOMessageParams;
+@class MSBOUserProfile;
 @class MSBOSetAccessTokenCommand;
+@class MSBOSetPushTokenResult;
+@class MSBOSetPushTokenCommand;
 @class MSBOChatHistoryResult;
 @class MSBOLoadChatHistoryCommand;
 @class MSBOChatSummaryResult;
 @class MSBOLoadChatSummaryCommand;
 @class MSBOSendMessageResult;
 @class MSBOSendMessageCommand;
-@class MSBOMessageParams;
-@class MSBOUserProfile;
-@class MSBOConnectionStatus;
-@class MSBOMesiboMessage;
 
-@interface MSBOSetAccessTokenCommand : NSObject
-@property(nonatomic, copy, nullable) NSString * accessToken;
+@interface MSBOConnectionStatus : NSObject
+@property(nonatomic, strong, nullable) NSNumber * code;
 @end
 
-@interface MSBOChatHistoryResult : NSObject
-@property(nonatomic, strong, nullable) NSNumber * readCount;
-@end
-
-@interface MSBOLoadChatHistoryCommand : NSObject
-@property(nonatomic, copy, nullable) NSString * peerAddress;
-@property(nonatomic, strong, nullable) NSNumber * count;
-@end
-
-@interface MSBOChatSummaryResult : NSObject
-@property(nonatomic, strong, nullable) NSNumber * readCount;
-@end
-
-@interface MSBOLoadChatSummaryCommand : NSObject
-@property(nonatomic, strong, nullable) NSNumber * count;
-@end
-
-@interface MSBOSendMessageResult : NSObject
-@property(nonatomic, strong, nullable) NSNumber * result;
-@end
-
-@interface MSBOSendMessageCommand : NSObject
+@interface MSBOMesiboMessage : NSObject
 @property(nonatomic, strong, nullable) MSBOMessageParams * params;
-@property(nonatomic, strong, nullable) NSNumber * mid;
 @property(nonatomic, strong, nullable) FlutterStandardTypedData * data;
 @end
 
@@ -82,24 +62,44 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, nullable) NSNumber * do_not_use_in_app_code_isProfileNull;
 @end
 
-@interface MSBOConnectionStatus : NSObject
-@property(nonatomic, strong, nullable) NSNumber * code;
+@interface MSBOSetAccessTokenCommand : NSObject
+@property(nonatomic, copy, nullable) NSString * accessToken;
 @end
 
-@interface MSBOMesiboMessage : NSObject
+@interface MSBOSetPushTokenResult : NSObject
+@property(nonatomic, strong, nullable) NSNumber * result;
+@end
+
+@interface MSBOSetPushTokenCommand : NSObject
+@property(nonatomic, copy, nullable) NSString * pushToken;
+@end
+
+@interface MSBOChatHistoryResult : NSObject
+@property(nonatomic, strong, nullable) NSNumber * readCount;
+@end
+
+@interface MSBOLoadChatHistoryCommand : NSObject
+@property(nonatomic, copy, nullable) NSString * peerAddress;
+@property(nonatomic, strong, nullable) NSNumber * count;
+@end
+
+@interface MSBOChatSummaryResult : NSObject
+@property(nonatomic, strong, nullable) NSNumber * readCount;
+@end
+
+@interface MSBOLoadChatSummaryCommand : NSObject
+@property(nonatomic, strong, nullable) NSNumber * count;
+@end
+
+@interface MSBOSendMessageResult : NSObject
+@property(nonatomic, strong, nullable) NSNumber * result;
+@end
+
+@interface MSBOSendMessageCommand : NSObject
 @property(nonatomic, strong, nullable) MSBOMessageParams * params;
+@property(nonatomic, strong, nullable) NSNumber * mid;
 @property(nonatomic, strong, nullable) FlutterStandardTypedData * data;
 @end
-
-@protocol MSBOMesiboRealTimeApi
--(void)setAccessToken:(MSBOSetAccessTokenCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
--(void)start:(FlutterError *_Nullable *_Nonnull)error;
--(nullable MSBOChatHistoryResult *)loadChatHistory:(MSBOLoadChatHistoryCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
--(nullable MSBOChatSummaryResult *)loadChatSummary:(MSBOLoadChatSummaryCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
--(nullable MSBOSendMessageResult *)sendMessage:(MSBOSendMessageCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
-@end
-
-extern void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<MSBOMesiboRealTimeApi> _Nullable api);
 
 @interface MSBOMesiboConnectionListener : NSObject
 - (instancetype)initWithBinaryMessenger:(id<FlutterBinaryMessenger>)binaryMessenger;
@@ -110,4 +110,15 @@ extern void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenge
 - (void)onMessage:(MSBOMesiboMessage*)input completion:(void(^)(NSError* _Nullable))completion;
 - (void)onMessageStatus:(MSBOMessageParams*)input completion:(void(^)(NSError* _Nullable))completion;
 @end
+@protocol MSBOMesiboRealTimeApi
+-(void)setAccessToken:(MSBOSetAccessTokenCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
+-(nullable MSBOSetPushTokenResult *)setPushToken:(MSBOSetPushTokenCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
+-(void)start:(FlutterError *_Nullable *_Nonnull)error;
+-(nullable MSBOChatHistoryResult *)loadChatHistory:(MSBOLoadChatHistoryCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
+-(nullable MSBOChatSummaryResult *)loadChatSummary:(MSBOLoadChatSummaryCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
+-(nullable MSBOSendMessageResult *)sendMessage:(MSBOSendMessageCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
+@end
+
+extern void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<MSBOMesiboRealTimeApi> _Nullable api);
+
 NS_ASSUME_NONNULL_END
