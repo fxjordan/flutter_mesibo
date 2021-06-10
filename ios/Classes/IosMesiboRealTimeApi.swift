@@ -160,21 +160,4 @@ class IosMesiboRealTimeApi: MSBOMesiboRealTimeApi {
 
         return profile
     }
-    
-    func launchBuilt(inChatUI error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
-        os_log("launchBuilt called", log: OSLog.mesiboIosBinding, type: .info)
-        
-        Mesibo.getInstance()!.run(inThread: true, handler: {
-            
-            
-            //MesiboUI.launchMessageViewController(self.viewController, profile: profile)
-            
-            self.launchMesiboUI()
-        })
-    }
-    
-    func launchMesiboUI() {
-        // TODO Remove - deprecated
-        
-    }
 }

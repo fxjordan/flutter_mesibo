@@ -108,12 +108,6 @@ class Mesibo {
     print('MESIBO: Message sent successfully (mid=$mid)');
   }
 
-  // Launches the native MesiboUI for simple messaging
-  // (Primary for debugging / demonstration purposes)
-  Future<void> launchBuiltInChatUI() {
-    return apiBinding.launchBuiltInChatUI();
-  }
-
   /// Pre-process a [MessageParams] instance received from the platform channel.
   ///
   /// As a consequence of a bug workaround we have to represent a null property

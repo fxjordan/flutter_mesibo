@@ -170,13 +170,4 @@ class AndroidMesiboRealTimeApi(private val messageListener: Mesibo.MessageListen
 
         return profile
     }
-
-    /*
-     * TODO Remove! The UI launch method was only intended for debugging during first experiments.
-     */
-    @Deprecated(message = "UI support is dropped when refactoring into a plugin")
-    override fun launchBuiltInChatUI() {
-        throw UnsupportedOperationException()
-    }
-
 }
