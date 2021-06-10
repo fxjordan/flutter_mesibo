@@ -1,6 +1,6 @@
 name: flutter_mesibo
 description: Flutter plugin to use the Mesibo real-time chat API on Android and iOS.
-version: 0.1.2
+version: 0.1.3
 author: Felix Jordan <felix.jordan@buddy-app.de>
 homepage: https://github.com/fxjordan/flutter_mesibo
 
