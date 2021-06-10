@@ -35,7 +35,7 @@ class IosMesiboRealTimeApi: MSBOMesiboRealTimeApi {
             MSBOSetPushTokenResult? {
         os_log("setPushToken called", log: OSLog.mesiboIosBinding, type: .info)
         
-        let resultCode = Mesibo.getInstance()!.setPushToken(cmd.pushToken)
+        let resultCode = Mesibo.getInstance()!.setPushToken(cmd.pushToken, voip: false)
         os_log("setPushToken result: %{public}@", log: OSLog.mesiboIosBinding, type: .info, "\(resultCode)")
         
         let result = MSBOSetPushTokenResult.init()

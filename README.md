@@ -11,6 +11,11 @@ Flutter plugin to use the Mesibo real-time chat API on Android and iOS.
 
 See the [official Mesibo documentation](https://mesibo.com/documentation/api/backend-api) for more information.
 
+## Minimum Requirements
+
+- iOS Deployment target: 10.0 and above (because we use latest pod version. see docs https://mesibo.com/documentation/install/ios/)
+- Android: tested on `minSdkVersion` *29*, `targetSdkVersion` *29* (TODO someone check lower versions)
+
 ## Getting Started
 
 TODO

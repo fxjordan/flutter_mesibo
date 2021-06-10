@@ -18,7 +18,8 @@ A new flutter plugin project.
   # Mesibo has transitive static framework dependency, so we need to be static too
   s.static_framework = true
   s.dependency 'Flutter'
-  s.dependency 'mesibo'
+  # TODO Update mesibo dependecy from time to time
+  s.dependency 'mesibo', '~>1.4.5'
   s.platform = :ios, '10.0'
 
   # Flutter.framework does not contain a i386 slice.
