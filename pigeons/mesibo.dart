@@ -92,11 +92,6 @@ abstract class MesiboRealTimeApi {
   ///
   /// Check the result code for success.
   SendMessageResult sendMessage(SendMessageCommand cmd);
-
-  // Launches the native MesiboUI for simple messaging
-  // (Primary for debugging / demonstration purposes)
-  @deprecated
-  void launchBuiltInChatUI();
 }
 
 class ChatHistoryResult {

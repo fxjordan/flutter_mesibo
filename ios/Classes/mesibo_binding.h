@@ -97,7 +97,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(nullable MSBOChatHistoryResult *)loadChatHistory:(MSBOLoadChatHistoryCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
 -(nullable MSBOChatSummaryResult *)loadChatSummary:(MSBOLoadChatSummaryCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
 -(nullable MSBOSendMessageResult *)sendMessage:(MSBOSendMessageCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
--(void)launchBuiltInChatUI:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<MSBOMesiboRealTimeApi> _Nullable api);

@@ -418,22 +418,6 @@ void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<M
       [channel setMessageHandler:nil];
     }
   }
-  {
-    FlutterBasicMessageChannel *channel =
-      [FlutterBasicMessageChannel
-        messageChannelWithName:@"dev.flutter.pigeon.MesiboRealTimeApi.launchBuiltInChatUI"
-        binaryMessenger:binaryMessenger];
-    if (api) {
-      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
-        FlutterError *error;
-        [api launchBuiltInChatUI:&error];
-        callback(wrapResult(nil, error));
-      }];
-    }
-    else {
-      [channel setMessageHandler:nil];
-    }
-  }
 }
 @interface MSBOMesiboConnectionListener ()
 @property (nonatomic, strong) NSObject<FlutterBinaryMessenger>* binaryMessenger;

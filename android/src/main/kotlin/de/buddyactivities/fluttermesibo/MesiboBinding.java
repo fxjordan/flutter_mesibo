@@ -426,7 +426,6 @@ public class MesiboBinding {
     ChatHistoryResult loadChatHistory(LoadChatHistoryCommand arg);
     ChatSummaryResult loadChatSummary(LoadChatSummaryCommand arg);
     SendMessageResult sendMessage(SendMessageCommand arg);
-    void launchBuiltInChatUI();
 
     /** Sets up an instance of `MesiboRealTimeApi` to handle messages through the `binaryMessenger`. */
     static void setup(BinaryMessenger binaryMessenger, MesiboRealTimeApi api) {
@@ -523,25 +522,6 @@ public class MesiboBinding {
               SendMessageCommand input = SendMessageCommand.fromMap((Map<String, Object>)message);
               SendMessageResult output = api.sendMessage(input);
               wrapped.put("result", output.toMap());
-            }
-            catch (Error | RuntimeException exception) {
-              wrapped.put("error", wrapError(exception));
-            }
-            reply.reply(wrapped);
-          });
-        } else {
-          channel.setMessageHandler(null);
-        }
-      }
-      {
-        BasicMessageChannel<Object> channel =
-            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboRealTimeApi.launchBuiltInChatUI", new StandardMessageCodec());
-        if (api != null) {
-          channel.setMessageHandler((message, reply) -> {
-            Map<String, Object> wrapped = new HashMap<>();
-            try {
-              api.launchBuiltInChatUI();
-              wrapped.put("result", null);
             }
             catch (Error | RuntimeException exception) {
               wrapped.put("error", wrapError(exception));
