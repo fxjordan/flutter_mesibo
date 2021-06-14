@@ -22,6 +22,8 @@ class FlutterMesiboPlugin: FlutterPlugin {
     private const val TAG = "FlutterMesiboPlugin"
   }
 
+  val modelMapper: BindingModelMapper = BindingModelMapper()
+
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     initMesibo(flutterPluginBinding.applicationContext)
     setupMesiboPlatformBinding(flutterPluginBinding)
@@ -71,7 +73,7 @@ class FlutterMesiboPlugin: FlutterPlugin {
 
     // 2. Message listener, delegating to Flutter target listener
     val targetMessageListener = MesiboBinding.MesiboMessageListener(pluginBinding.binaryMessenger)
-    val delegatingMessageListener = DelegatingMessageListener(targetMessageListener)
+    val delegatingMessageListener = DelegatingMessageListener(targetMessageListener, modelMapper)
     Mesibo.addListener(delegatingMessageListener)
     Log.i(TAG, "DelegatingMessageListener initialized")
 
@@ -82,6 +84,6 @@ class FlutterMesiboPlugin: FlutterPlugin {
      */
     MesiboBinding.MesiboRealTimeApi.setup(
             pluginBinding.binaryMessenger,
-            AndroidMesiboRealTimeApi(delegatingMessageListener, pluginBinding.applicationContext))
+            AndroidMesiboRealTimeApi(delegatingMessageListener, pluginBinding.applicationContext, modelMapper))
   }
 }

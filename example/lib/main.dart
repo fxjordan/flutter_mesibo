@@ -41,6 +41,8 @@ class MesiboTestContent extends StatefulWidget {
 class _MesiboTestContentState extends State<MesiboTestContent> {
   List<String> _logs = ['- Trying to start Mesibo -'];
 
+  UserProfile selfProfile;
+
   /// Called after user pasted an access token into our prompt and hit 'start' button
   Future<void> initMesibo(String accessToken) async {
     // Get Mesibo instance
@@ -75,6 +77,9 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
     setState(() {
       _logs.add('started Mesibo successfully');
     });
+
+    selfProfile = await mesibo.getSelfProfile();
+    print('loaded self profile: $selfProfile');
 
     /*
      * Listen for incoming messages.
@@ -115,17 +120,25 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
             initMesibo(accessToken);
           },
         ),
+        selfProfile != null
+          ? Text('user profile: address=${selfProfile.address}, name=${selfProfile.name}, unreadCount=${selfProfile.unread}')
+          : Container(),
         Expanded(
           child: Center(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _logs
-                .map((text) => Padding(
-                      padding: EdgeInsets.symmetric(vertical: 2),
-                      child: Text(text),
-                    ))
-                .toList(),
-          )),
+            child: ListView(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _logs
+                      .map((text) => Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2),
+                    child: Text(text),
+                  ))
+                      .toList(),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );

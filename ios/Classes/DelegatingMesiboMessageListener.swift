@@ -12,9 +12,11 @@ import mesibo
 class DelegatingMesiboMessageListener: NSObject, MesiboDelegate {
     
     let targetListener: MSBOMesiboMessageListener
+    let modelMapper: BindingModelMapper
     
-    init(targetListener: MSBOMesiboMessageListener) {
+    init(targetListener: MSBOMesiboMessageListener, modelMapper: BindingModelMapper) {
         self.targetListener = targetListener
+        self.modelMapper = modelMapper
     }
     
     func mesibo_(onMessage optParams: MesiboParams!, data: Data!) {
@@ -29,7 +31,7 @@ class DelegatingMesiboMessageListener: NSObject, MesiboDelegate {
                type: .info, "\(params.peer!)", "\(params.mid)", "\(params.origin)")
         
         let mappedMessage = MSBOMesiboMessage.init()
-        mappedMessage.params = toBindingMessageParams(source: params)
+        mappedMessage.params = modelMapper.toBindingMessageParams(source: params)
         mappedMessage.data = FlutterStandardTypedData.init(bytes: data)
         
         targetListener.onMessage(mappedMessage) { (error: Error?) in
@@ -48,51 +50,11 @@ class DelegatingMesiboMessageListener: NSObject, MesiboDelegate {
                log: OSLog.mesiboIosBinding,
                type: .info, "\(params.peer!)", "\(params.mid)", "\(params.origin)")
         
-        let mappedParams = toBindingMessageParams(source: params)
+        let mappedParams = modelMapper.toBindingMessageParams(source: params)
         
         targetListener.onMessageStatus(mappedParams) { (error: Error?) in
             // TODO handle result, if error
         }
-    }
-    
-    private func toBindingMessageParams(source: MesiboParams) -> MSBOMessageParams {
-        let params = MSBOMessageParams.init()
-        
-        // Map all properties
-        params.mid = source.mid as NSNumber
-        params.peer = source.peer
-        params.groupId = source.groupid as NSNumber
-        params.profile = toBindingUserProfile(source: source.profile)
-        params.groupProfile = toBindingUserProfile(source: source.groupProfile)
-        params.expiry = source.expiry as NSNumber
-        params.type = source.type as NSNumber
-        params.ts = source.ts as NSNumber
-        params.flag = source.flag as NSNumber
-        params.origin = source.origin as NSNumber
-        params.status = source.status as NSNumber
-        
-        return params
-    }
-    
-    private func toBindingUserProfile(source: MesiboUserProfile!) -> MSBOUserProfile! {
-        if (source == nil) {
-            return nil
-        }
-        
-        let profile = MSBOUserProfile.init()
-        
-        // Map all properties
-        profile.name = source.name
-        profile.address = source.address
-        profile.groupId = source.groupid as NSNumber
-        profile.status = source.status
-        profile.picturePath = source.picturePath
-        profile.draft = source.draft
-        profile.unread = source.unread as NSNumber
-        // TODO add 'other' property
-        profile.flag = source.flag  as NSNumber
-        
-        return profile
     }
     
     func mesibo_(on message: MesiboMessage!) {

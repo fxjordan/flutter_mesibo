@@ -529,4 +529,20 @@ void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<M
       [channel setMessageHandler:nil];
     }
   }
+  {
+    FlutterBasicMessageChannel *channel =
+      [FlutterBasicMessageChannel
+        messageChannelWithName:@"dev.flutter.pigeon.MesiboRealTimeApi.getSelfProfile"
+        binaryMessenger:binaryMessenger];
+    if (api) {
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        FlutterError *error;
+        MSBOUserProfile *output = [api getSelfProfile:&error];
+        callback(wrapResult([output toMap], error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
 }

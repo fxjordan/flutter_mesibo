@@ -68,6 +68,14 @@ class Mesibo {
     }
   }
 
+  Future<UserProfile> getSelfProfile() async {
+    UserProfile profile = await apiBinding.getSelfProfile();
+    if (profile == null || profile.do_not_use_in_app_code_isProfileNull == true) {
+      return null;
+    } else
+      return profile;
+  }
+
   Future<void> start() {
     return apiBinding.start();
   }

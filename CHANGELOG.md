@@ -1,3 +1,7 @@
+## 0.1.3
+
+- add `getSelfProfile()`
+
 ## 0.1.2
 
 - Minimum iOS deployment target version is iOS 10.0

@@ -98,6 +98,8 @@ abstract class MesiboRealTimeApi {
   ///
   /// Check the result code for success.
   SendMessageResult sendMessage(SendMessageCommand cmd);
+
+  UserProfile getSelfProfile();
 }
 
 class SetPushTokenResult {

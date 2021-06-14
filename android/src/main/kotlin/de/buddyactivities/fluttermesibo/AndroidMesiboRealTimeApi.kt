@@ -12,7 +12,6 @@ package de.buddyactivities.fluttermesibo
 import android.content.Context
 import android.util.Log
 import com.mesibo.api.Mesibo
-import java.lang.UnsupportedOperationException
 
 /**
  * Android platform specific implementation of the MesiboRealTimeApi defined by the Flutter to
@@ -23,7 +22,10 @@ import java.lang.UnsupportedOperationException
  * @param messageListener the message listener that should handle messages requested through
  *  DB read sessions (e.g., chat summary).
  */
-class AndroidMesiboRealTimeApi(private val messageListener: Mesibo.MessageListener, private val context: Context) : MesiboBinding.MesiboRealTimeApi {
+class AndroidMesiboRealTimeApi(
+        private val messageListener: Mesibo.MessageListener,
+        private val context: Context,
+        private val modelMapper: BindingModelMapper) : MesiboBinding.MesiboRealTimeApi {
 
     companion object {
         private const val TAG = "MesiboRTApiImpl"
@@ -89,7 +91,7 @@ class AndroidMesiboRealTimeApi(private val messageListener: Mesibo.MessageListen
 
     override fun sendMessage(cmd: MesiboBinding.SendMessageCommand?): MesiboBinding.SendMessageResult {
         try {
-            val params = toMesiboMessageParams(cmd!!.params)
+            val params = modelMapper.toMesiboMessageParams(cmd!!.params)
 
             Log.d(TAG, "sending message: mid=${cmd.mid}")
 
@@ -105,83 +107,9 @@ class AndroidMesiboRealTimeApi(private val messageListener: Mesibo.MessageListen
         }
     }
 
-    private fun toMesiboMessageParams(source: MesiboBinding.MessageParams): Mesibo.MessageParams {
-        val params = Mesibo.MessageParams()
+    override fun getSelfProfile(): MesiboBinding.UserProfile {
+        val profile: Mesibo.UserProfile? = Mesibo.getSelfProfile()
 
-        // Map all properties
-        if (source.mid != null) {
-            params.mid = source.mid
-        }
-        if (source.peer != null) {
-            params.peer = source.peer
-        }
-        if (source.groupId != null) {
-            params.groupid = source.groupId
-        }
-        if (source.profile != null && source.profile.do_not_use_in_app_code_isProfileNull != true) {
-            /*
-             * BUG WORKAROUND: Check docs on UserProfile in pigeons/mesibo.dart template.
-             */
-            params.profile = toMesiboProfile(source.profile)
-        }
-        if (source.groupProfile != null && source.groupProfile.do_not_use_in_app_code_isProfileNull != true) {
-            /*
-             * BUG WORKAROUND: Check docs on UserProfile in pigeons/mesibo.dart template.
-             */
-            params.groupProfile = toMesiboProfile(source.groupProfile)
-        }
-        if (source.expiry != null) {
-            params.expiry = source.expiry.toInt()
-        }
-        if (source.type != null) {
-            params.type = source.type.toInt()
-        }
-        if (source.ts != null) {
-            params.ts = source.ts
-        }
-        if (source.flag != null) {
-            params.flag = source.flag.toInt()
-        }
-        if (source.origin != null) {
-            params.origin = source.origin.toInt()
-        }
-        if (source.status != null) {
-            params.status = source.status.toInt()
-        }
-
-        return params
-    }
-
-    private fun toMesiboProfile(source: MesiboBinding.UserProfile): Mesibo.UserProfile {
-        val profile = Mesibo.UserProfile()
-
-        // Map all properties
-        if (source.name != null) {
-            profile.name = source.name
-        }
-        if (source.address != null) {
-            profile.address = source.address
-        }
-        if (source.groupId != null) {
-            profile.groupid = source.groupId
-        }
-        if (source.status != null) {
-            profile.status = source.status
-        }
-        if (source.picturePath != null) {
-            profile.picturePath = source.picturePath
-        }
-        if (source.draft != null) {
-            profile.draft = source.draft
-        }
-        if (source.unread != null) {
-            profile.unread = source.unread.toInt()
-        }
-        // TODO add 'other' property
-        if (source.flag != null) {
-            profile.flag = source.flag
-        }
-
-        return profile
+        return modelMapper.toBindingProfile(profile);
     }
 }
