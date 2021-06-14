@@ -100,6 +100,8 @@ abstract class MesiboRealTimeApi {
   SendMessageResult sendMessage(SendMessageCommand cmd);
 
   UserProfile getSelfProfile();
+
+  GetRecentProfilesResult getRecentProfiles();
 }
 
 class SetPushTokenResult {
@@ -120,6 +122,10 @@ class ChatSummaryResult {
 
 class SendMessageResult {
   int result;
+}
+
+class GetRecentProfilesResult {
+  List<Map<String, dynamic>> profiles;
 }
 
 class ConnectionStatus {

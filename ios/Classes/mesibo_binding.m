@@ -74,6 +74,10 @@ static NSDictionary<NSString*, id>* wrapResult(NSDictionary *result, FlutterErro
 +(MSBOSendMessageCommand*)fromMap:(NSDictionary*)dict;
 -(NSDictionary*)toMap;
 @end
+@interface MSBOGetRecentProfilesResult ()
++(MSBOGetRecentProfilesResult*)fromMap:(NSDictionary*)dict;
+-(NSDictionary*)toMap;
+@end
 
 @implementation MSBOConnectionStatus
 +(MSBOConnectionStatus*)fromMap:(NSDictionary*)dict {
@@ -369,6 +373,20 @@ static NSDictionary<NSString*, id>* wrapResult(NSDictionary *result, FlutterErro
 }
 @end
 
+@implementation MSBOGetRecentProfilesResult
++(MSBOGetRecentProfilesResult*)fromMap:(NSDictionary*)dict {
+  MSBOGetRecentProfilesResult* result = [[MSBOGetRecentProfilesResult alloc] init];
+  result.profiles = dict[@"profiles"];
+  if ((NSNull *)result.profiles == [NSNull null]) {
+    result.profiles = nil;
+  }
+  return result;
+}
+-(NSDictionary*)toMap {
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.profiles ? self.profiles : [NSNull null]), @"profiles", nil];
+}
+@end
+
 @interface MSBOMesiboConnectionListener ()
 @property (nonatomic, strong) NSObject<FlutterBinaryMessenger>* binaryMessenger;
 @end
@@ -538,6 +556,22 @@ void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<M
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         FlutterError *error;
         MSBOUserProfile *output = [api getSelfProfile:&error];
+        callback(wrapResult([output toMap], error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [FlutterBasicMessageChannel
+        messageChannelWithName:@"dev.flutter.pigeon.MesiboRealTimeApi.getRecentProfiles"
+        binaryMessenger:binaryMessenger];
+    if (api) {
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        FlutterError *error;
+        MSBOGetRecentProfilesResult *output = [api getRecentProfiles:&error];
         callback(wrapResult([output toMap], error));
       }];
     }

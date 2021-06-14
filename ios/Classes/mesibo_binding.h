@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class MSBOLoadChatSummaryCommand;
 @class MSBOSendMessageResult;
 @class MSBOSendMessageCommand;
+@class MSBOGetRecentProfilesResult;
 
 @interface MSBOConnectionStatus : NSObject
 @property(nonatomic, strong, nullable) NSNumber * code;
@@ -101,6 +102,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, nullable) FlutterStandardTypedData * data;
 @end
 
+@interface MSBOGetRecentProfilesResult : NSObject
+@property(nonatomic, strong, nullable) NSArray * profiles;
+@end
+
 @interface MSBOMesiboConnectionListener : NSObject
 - (instancetype)initWithBinaryMessenger:(id<FlutterBinaryMessenger>)binaryMessenger;
 - (void)onConnectionStatus:(MSBOConnectionStatus*)input completion:(void(^)(NSError* _Nullable))completion;
@@ -118,6 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(nullable MSBOChatSummaryResult *)loadChatSummary:(MSBOLoadChatSummaryCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
 -(nullable MSBOSendMessageResult *)sendMessage:(MSBOSendMessageCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
 -(nullable MSBOUserProfile *)getSelfProfile:(FlutterError *_Nullable *_Nonnull)error;
+-(nullable MSBOGetRecentProfilesResult *)getRecentProfiles:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void MSBOMesiboRealTimeApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<MSBOMesiboRealTimeApi> _Nullable api);

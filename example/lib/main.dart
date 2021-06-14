@@ -41,7 +41,8 @@ class MesiboTestContent extends StatefulWidget {
 class _MesiboTestContentState extends State<MesiboTestContent> {
   List<String> _logs = ['- Trying to start Mesibo -'];
 
-  UserProfile selfProfile;
+  UserProfile _selfProfile;
+  List<UserProfile> _recentProfiles;
 
   /// Called after user pasted an access token into our prompt and hit 'start' button
   Future<void> initMesibo(String accessToken) async {
@@ -78,8 +79,12 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
       _logs.add('started Mesibo successfully');
     });
 
-    selfProfile = await mesibo.getSelfProfile();
+    /*
+    UserProfile selfProfile = await mesibo.getSelfProfile();
     print('loaded self profile: $selfProfile');
+    setState(() {
+      _selfProfile = selfProfile;
+    });*/
 
     /*
      * Listen for incoming messages.
@@ -87,7 +92,7 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
      * You can send a text message from the Mesibo console to the user
      * from which you copied the access token.
      */
-    mesibo.realTimeMessageStream.listen(_handleNewMessage);
+    //mesibo.realTimeMessageStream.listen(_handleNewMessage);
   }
 
   /*
@@ -120,9 +125,29 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
             initMesibo(accessToken);
           },
         ),
-        selfProfile != null
-          ? Text('user profile: address=${selfProfile.address}, name=${selfProfile.name}, unreadCount=${selfProfile.unread}')
-          : Container(),
+        MaterialButton(
+          child: Text('Load recent profiles'),
+          onPressed: () async {
+            List<UserProfile> profiles =
+                await Mesibo.instance.getRecentProfiles();
+            print('loaded ${profiles.length} profiles');
+            setState(() {
+              _recentProfiles = profiles;
+            });
+          },
+        ),
+        _selfProfile != null
+            ? Text(
+                'user profile: address=${_selfProfile.address}, name=${_selfProfile.name}, unreadCount=${_selfProfile.unread}')
+            : Container(),
+        Text('Recent profiles:'),
+        _recentProfiles != null
+            ? Column(
+                children: _recentProfiles
+                    .map((profile) =>
+                        Text('${profile.name} (unread: ${profile.unread})'))
+                    .toList())
+            : Text('-'),
         Expanded(
           child: Center(
             child: ListView(
@@ -131,9 +156,9 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: _logs
                       .map((text) => Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2),
-                    child: Text(text),
-                  ))
+                            padding: EdgeInsets.symmetric(vertical: 2),
+                            child: Text(text),
+                          ))
                       .toList(),
                 ),
               ],

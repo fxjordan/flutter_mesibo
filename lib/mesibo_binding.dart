@@ -299,6 +299,22 @@ class SendMessageCommand {
   }
 }
 
+class GetRecentProfilesResult {
+  List<Object> profiles;
+
+  Object encode() {
+    final Map<Object, Object> pigeonMap = <Object, Object>{};
+    pigeonMap['profiles'] = profiles;
+    return pigeonMap;
+  }
+
+  static GetRecentProfilesResult decode(Object message) {
+    final Map<Object, Object> pigeonMap = message as Map<Object, Object>;
+    return GetRecentProfilesResult()
+      ..profiles = pigeonMap['profiles'] as List<Object>;
+  }
+}
+
 abstract class MesiboConnectionListener {
   void onConnectionStatus(ConnectionStatus arg);
   static void setup(MesiboConnectionListener api) {
@@ -511,6 +527,28 @@ class MesiboRealTimeApi {
       );
     } else {
       return UserProfile.decode(replyMap['result']);
+    }
+  }
+
+  Future<GetRecentProfilesResult> getRecentProfiles() async {
+    const BasicMessageChannel<Object> channel =
+        BasicMessageChannel<Object>('dev.flutter.pigeon.MesiboRealTimeApi.getRecentProfiles', StandardMessageCodec());
+    final Map<Object, Object> replyMap = await channel.send(null) as Map<Object, Object>;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+        details: null,
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object, Object> error = (replyMap['error'] as Map<Object, Object>);
+      throw PlatformException(
+        code: (error['code'] as String),
+        message: error['message'] as String,
+        details: error['details'],
+      );
+    } else {
+      return GetRecentProfilesResult.decode(replyMap['result']);
     }
   }
 }

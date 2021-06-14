@@ -457,6 +457,25 @@ public class MesiboBinding {
     }
   }
 
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class GetRecentProfilesResult {
+    private List<Object> profiles;
+    public List<Object> getProfiles() { return profiles; }
+    public void setProfiles(List<Object> setterArg) { this.profiles = setterArg; }
+
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("profiles", profiles);
+      return toMapResult;
+    }
+    static GetRecentProfilesResult fromMap(Map<String, Object> map) {
+      GetRecentProfilesResult fromMapResult = new GetRecentProfilesResult();
+      Object profiles = map.get("profiles");
+      fromMapResult.profiles = (List<Object>)profiles;
+      return fromMapResult;
+    }
+  }
+
   /** Generated class from Pigeon that represents Flutter messages that can be called from Java.*/
   public static class MesiboConnectionListener {
     private final BinaryMessenger binaryMessenger;
@@ -512,6 +531,7 @@ public class MesiboBinding {
     ChatSummaryResult loadChatSummary(LoadChatSummaryCommand arg);
     SendMessageResult sendMessage(SendMessageCommand arg);
     UserProfile getSelfProfile();
+    GetRecentProfilesResult getRecentProfiles();
 
     /** Sets up an instance of `MesiboRealTimeApi` to handle messages through the `binaryMessenger`. */
     static void setup(BinaryMessenger binaryMessenger, MesiboRealTimeApi api) {
@@ -647,6 +667,25 @@ public class MesiboBinding {
             Map<String, Object> wrapped = new HashMap<>();
             try {
               UserProfile output = api.getSelfProfile();
+              wrapped.put("result", output.toMap());
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboRealTimeApi.getRecentProfiles", new StandardMessageCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              GetRecentProfilesResult output = api.getRecentProfiles();
               wrapped.put("result", output.toMap());
             }
             catch (Error | RuntimeException exception) {

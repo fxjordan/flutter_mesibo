@@ -63,14 +63,15 @@ class Mesibo {
     /*
      * TODO Throw exception when we are sure about the result codes
      */
-    if (result.result !=  0) {
+    if (result.result != 0) {
       print('MESIBO: setPushToken result != 0 (returned: ${result.result})');
     }
   }
 
   Future<UserProfile> getSelfProfile() async {
     UserProfile profile = await apiBinding.getSelfProfile();
-    if (profile == null || profile.do_not_use_in_app_code_isProfileNull == true) {
+    if (profile == null ||
+        profile.do_not_use_in_app_code_isProfileNull == true) {
       return null;
     } else
       return profile;
@@ -78,6 +79,15 @@ class Mesibo {
 
   Future<void> start() {
     return apiBinding.start();
+  }
+
+  Future<List<UserProfile>> getRecentProfiles() {
+    /*
+     * NOTE: because Pigeon does not support generic lists yet, we transfer
+     * profiles as encoded Map<String, dynamic> manually!
+     */
+    return apiBinding.getRecentProfiles().then(
+        (result) => result.profiles.map((raw) => UserProfile.decode(raw)).toList());
   }
 
   // Load chat history for with specific user (peer address)
