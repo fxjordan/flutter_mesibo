@@ -112,4 +112,14 @@ class AndroidMesiboRealTimeApi(
 
         return modelMapper.toBindingProfile(profile);
     }
+
+    override fun getRecentProfiles(): MesiboBinding.GetRecentProfilesResult {
+        val profiles = Mesibo.getRecentUserProfiles()
+
+        val mappedProfiles = profiles.map { modelMapper.toBindingProfile(it) }
+        mappedProfiles.forEach { Log.d(TAG, "recent profile: " + it.address + " unread=" + it.unread) }
+        val result = MesiboBinding.GetRecentProfilesResult()
+        result.profiles = mappedProfiles.map { it.toMap() }
+        return result
+    }
 }
