@@ -1,6 +1,9 @@
 ## 0.1.3
 
-- add `getSelfProfile()`
+- feat: `Mesibo.getSelfProfile()`
+- feat: connection status stream to listen for changes
+
+- fix: no connection changes logged
 
 ## 0.1.2
 
