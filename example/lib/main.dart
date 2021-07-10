@@ -156,6 +156,24 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
           },
         ),
         MaterialButton(
+          child: Text('Stop Mesibo'),
+          onPressed: () async {
+            await Mesibo.instance.stop();
+            setState(() {
+              _logs.add('Sopped Mesibo');
+            });
+          },
+        ),
+        MaterialButton(
+          child: Text('Start (again)'),
+          onPressed: () async {
+            await Mesibo.instance.start();
+            setState(() {
+              _logs.add('Started Mesibo');
+            });
+          },
+        ),
+        MaterialButton(
           child: Text('Load recent profiles'),
           onPressed: () async {
             List<UserProfile> profiles =
