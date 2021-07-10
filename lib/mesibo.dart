@@ -23,6 +23,9 @@ class Mesibo {
   /// Message listener that handles calls from platform channels (and delegates to actual app)
   _MesiboMessageListenerImpl _messageListenerImpl;
 
+  final Emitter<int> _connectionStatusEmitter = Emitter();
+  Stream<int> get connectionStatusStream => _connectionStatusEmitter.asStream;
+
   final Emitter<MesiboMessage> _realTimeMessageEmitter = Emitter();
 
   /// Stream of incoming realtime messages.
@@ -41,7 +44,7 @@ class Mesibo {
   static Mesibo get instance => _instance;
 
   Mesibo._privateConstructor() {
-    _connectionListenerImpl = _MesiboConnectionListenerImpl();
+    _connectionListenerImpl = _MesiboConnectionListenerImpl(_connectionStatusEmitter);
     _messageListenerImpl = _MesiboMessageListenerImpl(
         _realTimeMessageEmitter, _messageStatusEmitter);
 
@@ -407,11 +410,18 @@ extension MesiboMessageMethodExtension on MesiboMessage {
 /// TODO This interface should either call a more abstract interface or publish
 /// events to a stream in the future that are used by the application.
 class _MesiboConnectionListenerImpl implements MesiboConnectionListener {
+  /// Emitter to publish connection status changes
+  final Emitter<int> realTimeMessageEmitter;
+
+  _MesiboConnectionListenerImpl(this.realTimeMessageEmitter);
+
   @override
   void onConnectionStatus(ConnectionStatus status) {
     String statusName = Mesibo.getConnectionStatusName(status.code);
 
     print('MESIBO: Mesibo connection status: $statusName (${status.code})');
+
+    realTimeMessageEmitter.emitOne(status.code);
   }
 }
 
