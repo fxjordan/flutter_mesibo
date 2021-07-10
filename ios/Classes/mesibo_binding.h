@@ -119,6 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)setAccessToken:(MSBOSetAccessTokenCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
 -(nullable MSBOSetPushTokenResult *)setPushToken:(MSBOSetPushTokenCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
 -(void)start:(FlutterError *_Nullable *_Nonnull)error;
+-(void)stop:(FlutterError *_Nullable *_Nonnull)error;
 -(nullable MSBOChatHistoryResult *)loadChatHistory:(MSBOLoadChatHistoryCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
 -(nullable MSBOChatSummaryResult *)loadChatSummary:(MSBOLoadChatSummaryCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;
 -(nullable MSBOSendMessageResult *)sendMessage:(MSBOSendMessageCommand*)input error:(FlutterError *_Nullable *_Nonnull)error;

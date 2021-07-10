@@ -1,6 +1,7 @@
 ## 0.1.3
 
 - feat: `Mesibo.getSelfProfile()`
+- feat: `Mesibo.stop()`
 - feat: connection status stream to listen for changes
 
 - fix: no connection changes logged

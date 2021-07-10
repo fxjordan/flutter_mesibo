@@ -84,6 +84,10 @@ class Mesibo {
     return apiBinding.start();
   }
 
+  Future<void> stop() {
+    return apiBinding.stop();
+  }
+
   Future<List<UserProfile>> getRecentProfiles() {
     /*
      * NOTE: because Pigeon does not support generic lists yet, we transfer

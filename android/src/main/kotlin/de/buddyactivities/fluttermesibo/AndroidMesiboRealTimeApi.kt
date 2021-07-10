@@ -64,6 +64,11 @@ class AndroidMesiboRealTimeApi(
         Log.d(TAG, "mesibo start result code: $resultCode")
     }
 
+    override fun stop() {
+        val resultCode = Mesibo.stop(false);
+        Log.d(TAG, "mesibo stop result code: $resultCode")
+    }
+
     override fun loadChatHistory(cmd: MesiboBinding.LoadChatHistoryCommand?): MesiboBinding.ChatHistoryResult {
         // loads summary (latest messages in all chats)
         val session = Mesibo.ReadDbSession(cmd!!.peerAddress, 0, null, messageListener)

@@ -86,6 +86,8 @@ abstract class MesiboRealTimeApi {
 
   void start();
 
+  void stop();
+
   // Load chat history for with specific user (peer address)
   ChatHistoryResult loadChatHistory(LoadChatHistoryCommand cmd);
 

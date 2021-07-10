@@ -527,6 +527,7 @@ public class MesiboBinding {
     void setAccessToken(SetAccessTokenCommand arg);
     SetPushTokenResult setPushToken(SetPushTokenCommand arg);
     void start();
+    void stop();
     ChatHistoryResult loadChatHistory(LoadChatHistoryCommand arg);
     ChatSummaryResult loadChatSummary(LoadChatSummaryCommand arg);
     SendMessageResult sendMessage(SendMessageCommand arg);
@@ -585,6 +586,25 @@ public class MesiboBinding {
             Map<String, Object> wrapped = new HashMap<>();
             try {
               api.start();
+              wrapped.put("result", null);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.MesiboRealTimeApi.stop", new StandardMessageCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              api.stop();
               wrapped.put("result", null);
             }
             catch (Error | RuntimeException exception) {

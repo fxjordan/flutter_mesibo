@@ -439,6 +439,28 @@ class MesiboRealTimeApi {
     }
   }
 
+  Future<void> stop() async {
+    const BasicMessageChannel<Object> channel =
+        BasicMessageChannel<Object>('dev.flutter.pigeon.MesiboRealTimeApi.stop', StandardMessageCodec());
+    final Map<Object, Object> replyMap = await channel.send(null) as Map<Object, Object>;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+        details: null,
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object, Object> error = (replyMap['error'] as Map<Object, Object>);
+      throw PlatformException(
+        code: (error['code'] as String),
+        message: error['message'] as String,
+        details: error['details'],
+      );
+    } else {
+      // noop
+    }
+  }
+
   Future<ChatHistoryResult> loadChatHistory(LoadChatHistoryCommand arg) async {
     final Object encoded = arg.encode();
     const BasicMessageChannel<Object> channel =

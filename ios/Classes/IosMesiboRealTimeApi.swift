@@ -52,6 +52,13 @@ class IosMesiboRealTimeApi: MSBOMesiboRealTimeApi {
         os_log("Mesibo start result code: %{public}@", log: OSLog.mesiboIosBinding, type: .info, "\(resultCode)")
     }
     
+    func stop(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        os_log("stop called", log: OSLog.mesiboIosBinding, type: .info)
+        
+        let resultCode: Int32 = Mesibo.getInstance()!.stop()
+        os_log("Mesibo stop result code: %{public}@", log: OSLog.mesiboIosBinding, type: .info, "\(resultCode)")
+    }
+    
     func loadChatHistory(_ cmd: MSBOLoadChatHistoryCommand, error: AutoreleasingUnsafeMutablePointer<FlutterError?>) -> MSBOChatHistoryResult? {
         os_log("loadChatHistory called", log: OSLog.mesiboIosBinding, type: .info)
         
