@@ -98,6 +98,9 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
      * from which you copied the access token.
      */
     mesibo.realTimeMessageStream.listen(_handleNewMessage);
+
+    // listen for connection status changes
+    mesibo.connectionStatusStream.listen(_handleConnectionStatusChanged);
   }
 
   /*
@@ -109,6 +112,12 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
 
     setState(() {
       _logs.add('new message (peer=${message.params.peer}): $messageText');
+    });
+  }
+
+  void _handleConnectionStatusChanged(int status) {
+    setState(() {
+      _logs.add('connection status changed: $status');
     });
   }
 
