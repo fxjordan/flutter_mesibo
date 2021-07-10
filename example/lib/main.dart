@@ -122,7 +122,16 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
                   'Input a Mesibo access token for an existing user (copy from Mesibo console)',
               textOK: Text('Start Mesibo'),
             );
-            initMesibo(accessToken);
+            if (accessToken != null && accessToken.isNotEmpty) {
+              setState(() {
+                _logs.add('initializing');
+              });
+              initMesibo(accessToken);
+            } else {
+              setState(() {
+                _logs.add('no access token given');
+              });
+            }
           },
         ),
         MaterialButton(
