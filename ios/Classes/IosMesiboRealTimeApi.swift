@@ -101,4 +101,14 @@ class IosMesiboRealTimeApi: MSBOMesiboRealTimeApi {
         // TODO fix return type
         return modelMapper.toBindingUserProfile(source: profile)
     }
+    
+    func getRecentProfiles(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) -> MSBOGetRecentProfilesResult? {
+        
+        let profiles: [MesiboUserProfile] = Mesibo.getInstance()!.getRecentProfiles() as! [MesiboUserProfile]
+        
+        let mappedProfiles: [MSBOUserProfile] = profiles.map { modelMapper.toBindingUserProfile(source: $0)}.compactMap {$0}
+        let result = MSBOGetRecentProfilesResult.init()
+        result.profiles = mappedProfiles
+        return result
+    }
 }
