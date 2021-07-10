@@ -4,7 +4,7 @@
 - feat: `Mesibo.stop()`
 - feat: connection status stream to listen for changes
 
-- fix: no connection changes logged
+- fix(iOS, Android): no connection changes reported
 
 ## 0.1.2
 

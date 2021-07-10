@@ -62,18 +62,15 @@ class FlutterMesiboPlugin: FlutterPlugin {
    * Creates the platform specific API implementations and registers them with the Flutter.
    */
   private fun setupMesiboPlatformBinding(pluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    // 1. Connection listener, delegating to Flutter target listener
-
     // the listener that calls Flutter methods using platform channels
     val targetConnectionListener = MesiboBinding.MesiboConnectionListener(pluginBinding.binaryMessenger)
-    // the native Mesibo listener that delegates to the platform channel implementation
-    val delegatingConnectionListener = DelegatingConnectionListener(targetConnectionListener)
-    Mesibo.addListener(delegatingConnectionListener)
-    Log.i(TAG, "DelegatingConnectionListener initialized")
 
     // 2. Message listener, delegating to Flutter target listener
     val targetMessageListener = MesiboBinding.MesiboMessageListener(pluginBinding.binaryMessenger)
-    val delegatingMessageListener = DelegatingMessageListener(targetMessageListener, modelMapper)
+    val delegatingMessageListener = DelegatingMessageListener(
+            targetMessageListener,
+            targetConnectionListener,
+            modelMapper)
     Mesibo.addListener(delegatingMessageListener)
     Log.i(TAG, "DelegatingMessageListener initialized")
 
