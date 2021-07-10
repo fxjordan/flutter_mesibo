@@ -92,7 +92,7 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
      * You can send a text message from the Mesibo console to the user
      * from which you copied the access token.
      */
-    //mesibo.realTimeMessageStream.listen(_handleNewMessage);
+    mesibo.realTimeMessageStream.listen(_handleNewMessage);
   }
 
   /*
