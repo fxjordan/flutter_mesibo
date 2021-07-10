@@ -67,12 +67,12 @@ class FlutterMesiboPlugin: FlutterPlugin {
 
     // 2. Message listener, delegating to Flutter target listener
     val targetMessageListener = MesiboBinding.MesiboMessageListener(pluginBinding.binaryMessenger)
-    val delegatingMessageListener = DelegatingMessageListener(
+    val delegatingMesiboListener = DelegatingMesiboListener(
             targetMessageListener,
             targetConnectionListener,
             modelMapper)
-    Mesibo.addListener(delegatingMessageListener)
-    Log.i(TAG, "DelegatingMessageListener initialized")
+    Mesibo.addListener(delegatingMesiboListener)
+    Log.i(TAG, "DelegatingMesiboListener initialized and added")
 
     // 3. Setup real-time API implementation
     /*
@@ -81,6 +81,6 @@ class FlutterMesiboPlugin: FlutterPlugin {
      */
     MesiboBinding.MesiboRealTimeApi.setup(
             pluginBinding.binaryMessenger,
-            AndroidMesiboRealTimeApi(delegatingMessageListener, pluginBinding.applicationContext, modelMapper))
+            AndroidMesiboRealTimeApi(delegatingMesiboListener, pluginBinding.applicationContext, modelMapper))
   }
 }

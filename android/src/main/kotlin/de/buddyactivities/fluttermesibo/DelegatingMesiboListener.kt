@@ -21,13 +21,13 @@ import com.mesibo.api.Mesibo
  * Otherwise one of the listeners won't be called. Therefore, we need to implement all listeners in the
  * same class and delegate to the different target listeners that bridge to Flutter.
  */
-class DelegatingMessageListener(
+class DelegatingMesiboListener(
         private val targetMessageListener: MesiboBinding.MesiboMessageListener,
         private val targetConnectionListener: MesiboBinding.MesiboConnectionListener,
         private val modelMapper: BindingModelMapper) : Mesibo.MessageListener, Mesibo.ConnectionListener {
 
     companion object {
-        private const val TAG = "MesiboMsgListnr"
+        private const val TAG = "MesiboListnr"
     }
 
     override fun Mesibo_onMessage(params: Mesibo.MessageParams?, data: ByteArray?): Boolean {
