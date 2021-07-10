@@ -41,11 +41,15 @@ class MesiboTestContent extends StatefulWidget {
 class _MesiboTestContentState extends State<MesiboTestContent> {
   List<String> _logs = ['- Trying to start Mesibo -'];
 
+  bool _mesiboInitialized = false;
   UserProfile _selfProfile;
   List<UserProfile> _recentProfiles;
 
   /// Called after user pasted an access token into our prompt and hit 'start' button
   Future<void> initMesibo(String accessToken) async {
+    if (_mesiboInitialized) {
+      throw Exception('Mesibo already initialized!');
+    }
     // Get Mesibo instance
     Mesibo mesibo = Mesibo.instance;
 
@@ -77,6 +81,7 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
     }
     setState(() {
       _logs.add('started Mesibo successfully');
+      _mesiboInitialized = true;
     });
 
     /*
@@ -115,6 +120,13 @@ class _MesiboTestContentState extends State<MesiboTestContent> {
           color: Theme.of(context).primaryColor,
           child: Text('Add token and start Mesibo'),
           onPressed: () async {
+            if (_mesiboInitialized) {
+              setState(() {
+                _logs.add('Mesibo already initialized');
+              });
+              return;
+            }
+
             String accessToken = await prompt(
               context,
               title: Text('Access Token'),
