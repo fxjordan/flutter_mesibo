@@ -9,7 +9,7 @@
 import os.log
 import mesibo
 
-class DelegatingMesiboMessageListener: NSObject, MesiboDelegate {
+class DelegatingMesiboListener: NSObject, MesiboDelegate {
     
     let targetMessageListener: MSBOMesiboMessageListener
     let targetConnectionListener: MSBOMesiboConnectionListener
@@ -77,7 +77,7 @@ class DelegatingMesiboMessageListener: NSObject, MesiboDelegate {
     }
     
     func mesibo_(onConnectionStatus statusCode: Int32) {
-        os_log("onConnectionStatus [connectionListener]  (status=%{public}@", log: OSLog.mesiboIosBinding, type: .info, "\(statusCode)")
+        os_log("onConnectionStatus [delegatingListener]  (status=%{public}@", log: OSLog.mesiboIosBinding, type: .info, "\(statusCode)")
         
         let status = MSBOConnectionStatus.init()
         status.code = statusCode as NSNumber

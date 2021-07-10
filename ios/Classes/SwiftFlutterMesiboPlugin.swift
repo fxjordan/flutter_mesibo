@@ -13,7 +13,7 @@ extension OSLog {
 public class SwiftFlutterMesiboPlugin: NSObject, FlutterPlugin {
     
     let modelMapper: BindingModelMapper = BindingModelMapper.init()
-    var delegatingMessageListener: DelegatingMesiboMessageListener!
+    var delegatingMesiboListener: DelegatingMesiboListener!
     var realTimeApiImpl: IosMesiboRealTimeApi!
     
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -26,13 +26,13 @@ public class SwiftFlutterMesiboPlugin: NSObject, FlutterPlugin {
         let targetConnectionListener = MSBOMesiboConnectionListener.init(binaryMessenger: registrar.messenger())
         let targetMessageListener = MSBOMesiboMessageListener.init(binaryMessenger: registrar.messenger())
         
-        self.delegatingMessageListener = DelegatingMesiboMessageListener.init(
+        self.delegatingMesiboListener = DelegatingMesiboListener.init(
             targetMessageListener: targetMessageListener,
             targetConnectionListener: targetConnectionListener,
             modelMapper: modelMapper)
-        Mesibo.getInstance()!.addListener(self.delegatingMessageListener)
+        Mesibo.getInstance()!.addListener(self.delegatingMesiboListener)
         
-        self.realTimeApiImpl = IosMesiboRealTimeApi.init(messageListener: self.delegatingMessageListener, modelMapper: self.modelMapper)
+        self.realTimeApiImpl = IosMesiboRealTimeApi.init(messageListener: self.delegatingMesiboListener, modelMapper: self.modelMapper)
         MSBOMesiboRealTimeApiSetup(registrar.messenger(), realTimeApiImpl)
         
         // General Mesibo configuration
