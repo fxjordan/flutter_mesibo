@@ -11,11 +11,13 @@ import mesibo
 
 class DelegatingMesiboMessageListener: NSObject, MesiboDelegate {
     
-    let targetListener: MSBOMesiboMessageListener
+    let targetMessageListener: MSBOMesiboMessageListener
+    let targetConnectionListener: MSBOMesiboConnectionListener
     let modelMapper: BindingModelMapper
     
-    init(targetListener: MSBOMesiboMessageListener, modelMapper: BindingModelMapper) {
-        self.targetListener = targetListener
+    init(targetMessageListener: MSBOMesiboMessageListener, targetConnectionListener: MSBOMesiboConnectionListener, modelMapper: BindingModelMapper) {
+        self.targetMessageListener = targetMessageListener
+        self.targetConnectionListener = targetConnectionListener
         self.modelMapper = modelMapper
     }
     
@@ -34,7 +36,7 @@ class DelegatingMesiboMessageListener: NSObject, MesiboDelegate {
         mappedMessage.params = modelMapper.toBindingMessageParams(source: params)
         mappedMessage.data = FlutterStandardTypedData.init(bytes: data)
         
-        targetListener.onMessage(mappedMessage) { (error: Error?) in
+        targetMessageListener.onMessage(mappedMessage) { (error: Error?) in
             // TODO handle result, if error
         }
     }
@@ -52,7 +54,7 @@ class DelegatingMesiboMessageListener: NSObject, MesiboDelegate {
         
         let mappedParams = modelMapper.toBindingMessageParams(source: params)
         
-        targetListener.onMessageStatus(mappedParams) { (error: Error?) in
+        targetMessageListener.onMessageStatus(mappedParams) { (error: Error?) in
             // TODO handle result, if error
         }
     }
@@ -72,5 +74,19 @@ class DelegatingMesiboMessageListener: NSObject, MesiboDelegate {
         os_log("on message (!strange listener method!) (id=%{public}@, type=%{public}@)",
                log: OSLog.mesiboIosBinding,
                type: .info, "\(message.mid)", "\(message.getType())")
+    }
+    
+    func mesibo_(onConnectionStatus statusCode: Int32) {
+        os_log("onConnectionStatus [connectionListener]  (status=%{public}@", log: OSLog.mesiboIosBinding, type: .info, "\(statusCode)")
+        
+        let status = MSBOConnectionStatus.init()
+        status.code = statusCode as NSNumber
+        
+        targetConnectionListener.onConnectionStatus(status) { (error: Error?) in
+            //completion
+            if (error != nil) {
+                os_log("error in Flutter connection listener onStatus: %{public}@", log: OSLog.mesiboIosBinding, type: .error, "\(error)")
+            }
+        }
     }
 }
