@@ -55,7 +55,7 @@ public class SwiftFlutterMesiboPlugin: NSObject, FlutterPlugin, FlutterApplicati
     public func applicationWillTerminate(_ application: UIApplication) {
         os_log("applicationWillTerminate", log: OSLog.mesiboIosBinding, type: .info)
         
-        Mesibo.getInstance()!.stop()
+        // don't stop here automatically. Applications should handle start/stop themself
     }
     
     public func applicationWillResignActive(_ application: UIApplication) {
@@ -65,12 +65,12 @@ public class SwiftFlutterMesiboPlugin: NSObject, FlutterPlugin, FlutterApplicati
     public func applicationDidEnterBackground(_ application: UIApplication) {
         os_log("applicationDidEnterBackground", log: OSLog.mesiboIosBinding, type: .info)
         
-        Mesibo.getInstance()!.stop()
+        // don't stop here automatically. Applications should handle start/stop themself
     }
     
     public func applicationWillEnterForeground(_ application: UIApplication) {
         os_log("applicationWillEnterForeground", log: OSLog.mesiboIosBinding, type: .info)
         
-        Mesibo.getInstance()!.start()
+        // don't start here automatically. Applications should handle start/stop themself
     }
 }
