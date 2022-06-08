@@ -20,6 +20,10 @@ See the [official Mesibo documentation](https://mesibo.com/documentation/api/bac
 
 TODO
 
+## Build
+
+Use `flutter pub run pigeon --input pigeons/mesibo.dart` to generate code before running.
+
 ## License
 
 ```

@@ -19,7 +19,7 @@ A new flutter plugin project.
   s.static_framework = true
   s.dependency 'Flutter'
   # TODO Update mesibo dependecy from time to time
-  s.dependency 'mesibo', '~>1.4.5'
+  s.dependency 'mesibo', '~>1.9.0'
   s.platform = :ios, '10.0'
 
   # Flutter.framework does not contain a i386 slice.

@@ -9,6 +9,6 @@
 #define FlutterMesiboPlugin_Bridging_Header_h
 
 #import "mesibo_binding.h"
-#import "mesibo/mesibo.h"
+#import "mesibo/Mesibo.h"
 
 #endif /* FlutterMesiboPlugin_Bridging_Header_h */

@@ -26,7 +26,7 @@ class BindingModelMapper {
         return params
     }
     
-    func toBindingUserProfile(source: MesiboUserProfile!) -> MSBOUserProfile! {
+    func toBindingUserProfile(source: MesiboProfile!) -> MSBOUserProfile! {
         if (source == nil) {
             return nil
         }
@@ -34,15 +34,16 @@ class BindingModelMapper {
         let profile = MSBOUserProfile.init()
         
         // Map all properties
-        profile.name = source.name
-        profile.address = source.address
-        profile.groupId = source.groupid as NSNumber
-        profile.status = source.status
-        profile.picturePath = source.picturePath
-        profile.draft = source.draft
-        profile.unread = source.unread as NSNumber
+        profile.name = source.getName()
+        profile.address = source.getAddress()
+        profile.groupId = source.getGroupId() as NSNumber
+        profile.status = source.getStatus()
+        profile.picturePath = source.getImagePath()
+        profile.draft = source.getDraft()
+        profile.unread = source.getUnreadCount() as NSNumber
         // TODO add 'other' property
-        profile.flag = source.flag  as NSNumber
+        
+        // note: 'flag' removed
         
         return profile
     }
@@ -82,7 +83,7 @@ class BindingModelMapper {
             params.ts = source.ts!.uint64Value
         }
         if (source.flag != nil) {
-            params.flag = source.flag!.uint32Value
+            params.flag = source.flag!.uint64Value
         }
         if (source.origin != nil) {
             params.origin = source.origin!.int32Value
@@ -94,35 +95,31 @@ class BindingModelMapper {
         return params
     }
     
-    func toMesiboUserProfile(source: MSBOUserProfile) -> MesiboUserProfile {
-        let profile = MesiboUserProfile.init()
+    func toMesiboUserProfile(source: MSBOUserProfile) -> MesiboProfile {
+        let profile = MesiboProfile.init()
 
         // Map all properties
         if (source.name != nil) {
-            profile.name = source.name
+            profile.setName(source.name)
         }
         if (source.address != nil) {
-            profile.address = source.address
+            profile.setAddress(source.address, gid: 0)
         }
         if (source.groupId != nil) {
-            profile.groupid = source.groupId!.uint32Value
+            profile.setAddress(nil, gid: source.groupId!.uint32Value)
         }
         if (source.status != nil) {
-            profile.status = source.status
+            profile.setStatus(source.status)
         }
         if (source.picturePath != nil) {
-            profile.picturePath = source.picturePath
+            profile.setImageUrl(source.picturePath)
         }
         if (source.draft != nil) {
-            profile.draft = source.draft
-        }
-        if (source.unread != nil) {
-            profile.unread = source.unread!.int32Value
+            profile.setDraft(source.draft)
         }
         // TODO add 'other' property
-        if (source.flag != nil) {
-            profile.flag = source.flag!.uint32Value
-        }
+        
+        // note: 'flag' and 'unread' were removed
 
         return profile
     }
